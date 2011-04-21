@@ -12,6 +12,7 @@ public class BoardState {
     }
     
     private BoardState(Piece[][] board, Move m) {
+        //TODO: Add logic to check piece placement
         this.board = Arrays.copyOf(board, board.length);
         this.board[m.getR()][m.getC()] = m.getPiece();
     }
@@ -21,6 +22,7 @@ public class BoardState {
         
         for (int r = 0; r < board.length; ++r) {
             for (int c = 0; c < board[r].length; ++c) {
+                //TODO: Add proper condition here
                 if (false) {
                     s.add(new Move(board[r][c], r, c));
                 }
