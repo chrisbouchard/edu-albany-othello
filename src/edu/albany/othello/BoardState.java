@@ -11,7 +11,9 @@ public class BoardState {
         
         for (int r = 0; r < board.length; ++r) {
             for (int c = 0; c < board[r].length; ++c) {
-                
+                if (false) {
+                    s.add(new Move(board[r][c], r, c));
+                }
             }
         }
         
