@@ -5,14 +5,14 @@ import java.util.Set;
 
 public class RandomBot extends Bot {
 
-	public RandomBot() {
-		// TODO Auto-generated constructor stub
+	public RandomBot(Piece p) {
+		super(p);
 	}
 
 	@Override
 	public Move nextMove(BoardState bs) {
 		Random r = new Random();
-		Move[] moves = (Move[]) bs.getValidMoves().toArray();
+		Move[] moves = (Move[]) bs.getValidMoves(p).toArray();
 		return moves[r.nextInt(moves.length)];
 	}
 
