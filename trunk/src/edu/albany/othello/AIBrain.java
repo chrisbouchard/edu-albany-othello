@@ -2,6 +2,7 @@ package edu.albany.othello;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class AIBrain {
 	Map<Bot, Double> botList = new HashMap<Bot, Double>();
@@ -16,7 +17,7 @@ public class AIBrain {
 	}
 	
 	private MoveConfidence getTotalConfidence(){
-		
+		return null;
 	}
 	
 	public Move getHighestConfidenceMove(){
