@@ -1,10 +1,20 @@
 package edu.albany.othello;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
 public class BoardState {
-    private Piece[][] board = new Piece[8][8];
+    private Piece[][] board;
+    
+    public BoardState() {
+        board = new Piece[8][8];
+    }
+    
+    private BoardState(Piece[][] board, Move m) {
+        this.board = Arrays.copyOf(board, board.length);
+        this.board[m.getR()][m.getC()] = m.getPiece();
+    }
     
     public Set<Move> getValidMoves() {
         Set<Move> s = new HashSet<Move>();
@@ -21,6 +31,6 @@ public class BoardState {
     }
     
     public BoardState getBoardFromMove(Move m) {
-        return null;
+        return new BoardState(board, m);
     }
 }
