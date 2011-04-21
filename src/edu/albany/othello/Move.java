@@ -9,4 +9,16 @@ public class Move {
         this.r = r;
         this.c = c;
     }
+
+    public Piece getPiece() {
+        return piece;
+    }
+
+    public int getR() {
+        return r;
+    }
+
+    public int getC() {
+        return c;
+    }
 }
