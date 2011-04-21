@@ -1,38 +1,143 @@
 package edu.albany.othello;
 
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
 public class BoardState {
+    // Size of the board
+    public static int ROWS = 8;
+    public static int COLS = 8;
+
+    // Convenience method to check if a square is on the board
+    public static Boolean isInBounds(int r, int c) {
+        return r >= 0 && r < ROWS && c >= 0 && c < COLS;
+    }
+
     private Piece[][] board;
-    
+
+    // Create a default board state
     public BoardState() {
-        board = new Piece[8][8];
+        board = new Piece[ROWS][COLS];
+        board[ROWS / 2 - 1][COLS / 2 - 1] = Piece.WHITE;
+        board[ROWS / 2 - 1][COLS / 2] = Piece.BLACK;
+        board[ROWS / 2][COLS / 2 - 1] = Piece.BLACK;
+        board[ROWS / 2][COLS / 2] = Piece.WHITE;
     }
-    
-    private BoardState(Piece[][] board, Move m) {
-        //TODO: Add logic to check piece placement
-        this.board = Arrays.copyOf(board, board.length);
-        this.board[m.getR()][m.getC()] = m.getPiece();
+
+    // Create a new board state based on a given state
+    private BoardState(BoardState parent, Move m) {
+        // Check that the new move is in bounds and is legal
+        if (!isInBounds(m.getR(), m.getC())
+                || parent.board[m.getR()][m.getC()] != null) {
+            throw new IllegalArgumentException();
+        }
+
+        board = new Piece[ROWS][COLS];
+
+        for (int r = 0; r < ROWS; ++r) {
+            for (int c = 0; c < COLS; ++c) {
+                board[r][c] = parent.board[r][c];
+            }
+        }
+
+        board[m.getR()][m.getC()] = m.getPiece();
     }
-    
-    public Set<Move> getValidMoves() {
-        Set<Move> s = new HashSet<Move>();
-        
-        for (int r = 0; r < board.length; ++r) {
-            for (int c = 0; c < board[r].length; ++c) {
-                //TODO: Add proper condition here
-                if (false) {
-                    s.add(new Move(board[r][c], r, c));
+
+    // Check if a piece of the given color could capture a piece if placed here
+    private Boolean canCapture(Piece p, int r, int c) {
+        for (int dr = -1; dr <= 1; ++dr) {
+            for (int dc = -1; dc <= 1; ++dc) {
+                if (canCaptureDirected(p, r + dr, c + dc, dr, dc)) {
+                    return true;
                 }
             }
         }
-        
+
+        return false;
+    }
+
+    private Boolean canCaptureDirected(Piece p, int r, int c, int dr, int dc) {
+        // Check if this square is in bounds
+        if (!isInBounds(r, c) || board[r][c] == null) {
+            return false;
+        }
+
+        // Check if the next square is in bounds
+        if (!isInBounds(r + dr, c + dc) || board[r + dr][c + dc] == null) {
+            return false;
+        }
+
+        if (board[r][c] != p && board[r + dr][c + dc] == p) {
+            return true;
+        }
+
+        return canCaptureDirected(p, r + dr, c + dc, dr, dc);
+    }
+
+    public BoardState getBoardFromMove(Move m) {
+        return new BoardState(this, m);
+    }
+
+    public Set<Move> getValidMoves(Piece p) {
+        Set<Move> s = new HashSet<Move>();
+
+        for (int r = 0; r < ROWS; ++r) {
+            for (int c = 0; c < COLS; ++c) {
+                if (board[r][c] == null && canCapture(p, r, c)) {
+                    s.add(new Move(p, r, c));
+                }
+            }
+        }
+
         return s;
     }
-    
-    public BoardState getBoardFromMove(Move m) {
-        return new BoardState(board, m);
+
+    public String toString() {
+        String str = " ";
+
+        for (int c = 0; c < COLS; ++c) {
+            str += " " + c;
+        }
+
+        str += "\n";
+
+        for (int r = 0; r < ROWS; ++r) {
+            str += r;
+
+            for (int c = 0; c < COLS; ++c) {
+                if (board[r][c] == null) {
+                    str += "  ";
+                }
+                else {
+                    switch (board[r][c]) {
+                    case WHITE:
+                        str += " W";
+                        break;
+
+                    case BLACK:
+                        str += " B";
+                        break;
+
+                    default:
+                        str += "  ";
+                        break;
+                    }
+                }
+            }
+
+            str += "\n";
+        }
+
+        return str;
+    }
+
+    public static void main(String[] args) {
+        BoardState bs = new BoardState();
+        System.out.println(bs);
+        System.out.println(bs.getValidMoves(Piece.BLACK));
+        System.out.println(bs.getBoardFromMove(new Move(Piece.BLACK, 2, 3))
+                .getValidMoves(Piece.WHITE));
+        System.out.println(bs.getBoardFromMove(new Move(Piece.BLACK, 2, 3))
+                .getBoardFromMove(new Move(Piece.WHITE, 4, 2)));
     }
 }

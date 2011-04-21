@@ -21,4 +21,8 @@ public class Move {
     public int getC() {
         return c;
     }
+    
+    public String toString() {
+        return "(" + piece + ", " + r + ", " + c + ")";
+    }
 }
