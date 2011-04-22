@@ -13,6 +13,16 @@ public class BoardState {
         return r >= 0 && r < ROWS && c >= 0 && c < COLS;
     }
 
+    public static void main(String[] args) {
+        BoardState bs = new BoardState();
+        System.out.println(bs);
+        System.out.println(bs.getValidMoves(Piece.BLACK));
+        System.out.println(bs.getBoardFromMove(new Move(Piece.BLACK, 2, 3))
+                .getValidMoves(Piece.WHITE));
+        System.out.println(bs.getBoardFromMove(new Move(Piece.BLACK, 2, 3))
+                .getBoardFromMove(new Move(Piece.WHITE, 4, 2)));
+    }
+
     private Piece[][] board;
 
     // Create a default board state
@@ -92,17 +102,15 @@ public class BoardState {
         return s;
     }
 
+    @Override
     public String toString() {
         String str = " ";
 
         for (int c = 0; c < COLS; ++c) {
             str += " " + c;
         }
-
-        str += "\n";
-
         for (int r = 0; r < ROWS; ++r) {
-            str += r;
+            str += "\n" + r;
 
             for (int c = 0; c < COLS; ++c) {
                 if (board[r][c] == null) {
@@ -124,20 +132,8 @@ public class BoardState {
                     }
                 }
             }
-
-            str += "\n";
         }
 
         return str;
-    }
-
-    public static void main(String[] args) {
-        BoardState bs = new BoardState();
-        System.out.println(bs);
-        System.out.println(bs.getValidMoves(Piece.BLACK));
-        System.out.println(bs.getBoardFromMove(new Move(Piece.BLACK, 2, 3))
-                .getValidMoves(Piece.WHITE));
-        System.out.println(bs.getBoardFromMove(new Move(Piece.BLACK, 2, 3))
-                .getBoardFromMove(new Move(Piece.WHITE, 4, 2)));
     }
 }
