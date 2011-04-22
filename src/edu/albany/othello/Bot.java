@@ -7,5 +7,5 @@ public abstract class Bot {
 		this.p = p; 	
 	}
 
-	public abstract Move nextMove(BoardState bs);
+	public abstract Set<MoveConfidence> getMoveConfidences(BoardState bs);
 }

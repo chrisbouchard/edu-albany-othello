@@ -1,7 +1,6 @@
 package edu.albany.othello;
 
 import java.util.Random;
-import java.util.Set;
 
 public class RandomBot extends Bot {
 
