@@ -63,6 +63,7 @@ public class OthelloModel {
                     System.out.println(p + ": "
                             + currentBoardState.getNumPieces(p));
                 }
+                System.out.flush();
                 System.err.println("Game over!");
                 System.exit(0);
             }
