@@ -1,6 +1,8 @@
 package edu.albany.othello;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public class BoardState {
@@ -25,15 +27,16 @@ public class BoardState {
 
     private Piece[][] board;
     private Set<Move> validMoves;
+    private Map<Move, BoardState> childBoards;
 
     // Create a default board state
     public BoardState() {
-        board = new Piece[ROWS][COLS];
+        init();
+        
         board[ROWS / 2 - 1][COLS / 2 - 1] = Piece.WHITE;
         board[ROWS / 2 - 1][COLS / 2] = Piece.BLACK;
         board[ROWS / 2][COLS / 2 - 1] = Piece.BLACK;
         board[ROWS / 2][COLS / 2] = Piece.WHITE;
-        validMoves = null;
     }
 
     // Create a new board state based on a given state
@@ -47,7 +50,7 @@ public class BoardState {
             throw new IllegalArgumentException();
         }
 
-        board = new Piece[ROWS][COLS];
+        init();
 
         for (int r = 0; r < ROWS; ++r) {
             for (int c = 0; c < COLS; ++c) {
@@ -56,7 +59,6 @@ public class BoardState {
         }
 
         board[m.getR()][m.getC()] = m.getPiece();
-        validMoves = null;
     }
 
     // Check if a piece of the given color could capture a piece if placed here
@@ -89,9 +91,16 @@ public class BoardState {
 
         return canCaptureDirected(p, r + dr, c + dc, dr, dc);
     }
-
+    
     public BoardState getBoardFromMove(Move m) {
-        return new BoardState(this, m);
+        BoardState bs = childBoards.get(m);
+        
+        if (bs == null) {
+            bs = new BoardState(this, m);
+            childBoards.put(m, bs);
+        }
+        
+        return bs;
     }
 
     public Set<Move> getValidMoves(Piece p) {
@@ -108,6 +117,12 @@ public class BoardState {
         }
 
         return validMoves;
+    }
+
+    private void init() {
+        board = new Piece[ROWS][COLS];
+        validMoves = null;
+        childBoards = new HashMap<Move, BoardState>();
     }
 
     @Override
