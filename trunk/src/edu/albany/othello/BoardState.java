@@ -26,7 +26,7 @@ public class BoardState {
     }
 
     private Piece[][] board;
-    private Set<Move> validMoves;
+    private Map<Piece, Set<Move>> validMoves;
     private Map<Move, BoardState> childBoards;
 
     // Create a default board state
@@ -61,37 +61,6 @@ public class BoardState {
         board[m.getR()][m.getC()] = m.getPiece();
     }
 
-    // Check if a piece of the given color could capture a piece if placed here
-    private Boolean canCapture(Piece p, int r, int c) {
-        for (int dr = -1; dr <= 1; ++dr) {
-            for (int dc = -1; dc <= 1; ++dc) {
-                if (canCaptureDirected(p, r + dr, c + dc, dr, dc)) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
-
-    private Boolean canCaptureDirected(Piece p, int r, int c, int dr, int dc) {
-        // Check if this square is in bounds
-        if (!isInBounds(r, c) || board[r][c] == null) {
-            return false;
-        }
-
-        // Check if the next square is in bounds
-        if (!isInBounds(r + dr, c + dc) || board[r + dr][c + dc] == null) {
-            return false;
-        }
-
-        if (board[r][c] != p && board[r + dr][c + dc] == p) {
-            return true;
-        }
-
-        return canCaptureDirected(p, r + dr, c + dc, dr, dc);
-    }
-    
     public BoardState getBoardFromMove(Move m) {
         BoardState bs = childBoards.get(m);
         
@@ -104,27 +73,24 @@ public class BoardState {
     }
 
     public Set<Move> getValidMoves(Piece p) {
-        if (validMoves == null) {
-            validMoves = new HashSet<Move>();
+        Set<Move> moves = validMoves.get(p);
+        if (moves == null) {
+            moves = new HashSet<Move>();
 
             for (int r = 0; r < ROWS; ++r) {
                 for (int c = 0; c < COLS; ++c) {
                     if (board[r][c] == null && canCapture(p, r, c)) {
-                        validMoves.add(new Move(p, r, c));
+                        moves.add(new Move(p, r, c));
                     }
                 }
             }
+            
+            validMoves.put(p, moves);
         }
 
-        return validMoves;
+        return moves;
     }
-
-    private void init() {
-        board = new Piece[ROWS][COLS];
-        validMoves = null;
-        childBoards = new HashMap<Move, BoardState>();
-    }
-
+    
     @Override
     public String toString() {
         String str = " ";
@@ -158,5 +124,42 @@ public class BoardState {
         }
 
         return str;
+    }
+
+    // Check if a piece of the given color could capture a piece if placed here
+    private Boolean canCapture(Piece p, int r, int c) {
+        for (int dr = -1; dr <= 1; ++dr) {
+            for (int dc = -1; dc <= 1; ++dc) {
+                if (canCaptureDirected(p, r + dr, c + dc, dr, dc)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private Boolean canCaptureDirected(Piece p, int r, int c, int dr, int dc) {
+        // Check if this square is in bounds
+        if (!isInBounds(r, c) || board[r][c] == null) {
+            return false;
+        }
+
+        // Check if the next square is in bounds
+        if (!isInBounds(r + dr, c + dc) || board[r + dr][c + dc] == null) {
+            return false;
+        }
+
+        if (board[r][c] != p && board[r + dr][c + dc] == p) {
+            return true;
+        }
+
+        return canCaptureDirected(p, r + dr, c + dc, dr, dc);
+    }
+
+    private void init() {
+        board = new Piece[ROWS][COLS];
+        validMoves = new HashMap<Piece, Set<Move>>();
+        childBoards = new HashMap<Move, BoardState>();
     }
 }
