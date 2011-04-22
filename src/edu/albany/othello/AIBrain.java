@@ -1,11 +1,12 @@
 package edu.albany.othello;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
 public class AIBrain {
-	//holds the bot and weight pair
+	// holds the bot and weight pair
 	Map<Bot, Double> botList = new HashMap<Bot, Double>();
 
 	public AIBrain() {
@@ -18,23 +19,37 @@ public class AIBrain {
 		return null;
 	}
 
-	// returns the set of confidences for each bot
-	private Set<MoveConfidence> getMoveConfidenceSet() {
-		Set<MoveConfidence> moveConfidenceSet = new Set<MoveConfidence>();
-		for (Bot b : botList.keySet()){
+	/**
+	 * 
+	 * @return Set of HashMaps of Move, confidence pairs for each bot
+	 */
+	private Set<HashMap<Move, Double>> getMoveConfidenceSet() {
+		Set<HashMap<Move, Double>> moveConfidenceSet = new HashSet<HashMap<Move, Double>>();
+		/*for (Bot b : botList.keySet()) {
 			MoveConfidence mc = b.getMoveConfidences(getBoardState());
 			moveConfidenceSet.add(mc);
 		}
-			
+*/
 		return moveConfidenceSet;
 	}
 
-	private MoveConfidence getTotalConfidence() {
+	/**
+	 * 
+	 * @return HashMap of Move, total confidence pairs
+	 */
+	private HashMap<Move, Double> getTotalConfidence(
+			Set<HashMap<Move, Double>> moveConfidenceSet) {
+		// TODO
 		return null;
 	}
 
-	public Move getHighestConfidenceMove() {
-
+	/**
+	 * 
+	 * @return Move with the highest total confidence
+	 */
+	public Move getHighestConfidenceMove(
+			HashMap<Move, Double> moveTotalConfidence) {
+		// TODO
 		return null;
 	}
 
