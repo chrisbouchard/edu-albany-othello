@@ -58,6 +58,7 @@ public class BoardState {
             }
         }
 
+        doCapture(m.getPiece(), m.getR(), m.getC());
         board[m.getR()][m.getC()] = m.getPiece();
     }
 
@@ -168,6 +169,43 @@ public class BoardState {
         }
 
         return canCaptureDirected(p, r + dr, c + dc, dr, dc);
+    }
+    
+
+    // Check if a piece of the given color could capture a piece if placed here
+    private Boolean doCapture(Piece p, int r, int c) {
+        for (int dr = -1; dr <= 1; ++dr) {
+            for (int dc = -1; dc <= 1; ++dc) {
+                doCaptureDirected(p, r + dr, c + dc, dr, dc);
+            }
+        }
+
+        return false;
+    }
+
+    private Boolean doCaptureDirected(Piece p, int r, int c, int dr, int dc) {
+        // Check if this square is in bounds
+        if (!isInBounds(r, c) || board[r][c] == null) {
+            return false;
+        }
+
+        // Check if the next square is in bounds
+        if (!isInBounds(r + dr, c + dc) || board[r + dr][c + dc] == null) {
+            return false;
+        }
+
+        if (board[r][c] != p && board[r + dr][c + dc] == p) {
+            board[r][c] = p;
+            return true;
+        }
+
+        if (doCaptureDirected(p, r + dr, c + dc, dr, dc)) {
+            board[r][c] = p;
+            return true;
+        }
+        else {
+            return false;
+        }
     }
     
     private void init() {
