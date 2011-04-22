@@ -52,13 +52,17 @@ public class OthelloModel {
         Move m = new Move(currentPiece, r, c);
         currentBoardState = currentBoardState.getBoardFromMove(m);
         moveList.add(m);
-        
+
         currentPiece = currentPiece.getAlternate();
-        
+
         if (!currentBoardState.hasValidMove(currentPiece)) {
             currentPiece = currentPiece.getAlternate();
-            
+
             if (!currentBoardState.hasValidMove(currentPiece)) {
+                for (Piece p : Piece.values()) {
+                    System.out.println(p + ": "
+                            + currentBoardState.getNumPieces(p));
+                }
                 System.err.println("Game over!");
                 System.exit(0);
             }
