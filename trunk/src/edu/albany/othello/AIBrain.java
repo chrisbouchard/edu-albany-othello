@@ -18,7 +18,7 @@ public class AIBrain extends Player{
 		for (Bot b : botList.keySet()) {
 			// all (move, confidence) pairs for b
 			HashMap<Move, Double> moveConfidences = b
-					.getMoveConfidences(getBoardState());
+					.getMoveConfidences(getBoardState(),getDeepestBoardStates());
 			// for each (move, confidence) pair for b
 			for (Entry<Move, Double> value : moveConfidences.entrySet()) {
 				// compute the weighted conf
