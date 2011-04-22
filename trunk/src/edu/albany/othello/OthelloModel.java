@@ -10,9 +10,7 @@ public class OthelloModel {
     private List<Move> moveList;
 
     public OthelloModel() {
-        currentBoardState = new BoardState();
-        currentPiece = Piece.BLACK;
-        moveList = new LinkedList<Move>();
+        initialize();
     }
 
     public BoardState getCurrentBoardState() {
@@ -29,6 +27,12 @@ public class OthelloModel {
 
     public int getTurnCounter() {
         return moveList.size();
+    }
+    
+    public void initialize() {
+        currentBoardState = new BoardState();
+        currentPiece = Piece.BLACK;
+        moveList = new LinkedList<Move>();
     }
 
     public void makeMove(int r, int c) {
