@@ -1,9 +1,9 @@
 package edu.albany.othello;
 
 public class Move {
-	private Piece piece;
-	private int r, c;
-	
+    private Piece piece;
+    private int r, c;
+
     public Move(Piece piece, int r, int c) {
         this.piece = piece;
         this.r = r;
@@ -21,7 +21,8 @@ public class Move {
     public int getC() {
         return c;
     }
-    
+
+    @Override
     public String toString() {
         return "(" + piece + ", " + r + ", " + c + ")";
     }
