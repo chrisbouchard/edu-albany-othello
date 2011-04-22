@@ -77,5 +77,11 @@ public class AIBrain extends Player{
 		// TODO fill in botList
 		botList = new HashMap<Bot, Double>();
 	}
+	
+	private Map<Piece, Map<Move, Set<BoardState>>> getDeepestBoardStates(){
+		//this.getBoardState().getValidMoves(p);
+		//this.getBoardState().getBoardFromMove(m);
+		return null;
+	}
 
 }
