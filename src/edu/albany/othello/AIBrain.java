@@ -12,7 +12,7 @@ public class AIBrain extends Player{
 	// holds the bot and weight pair
 	Map<Bot, Double> botList = new HashMap<Bot, Double>();
 
-	public Move getBestestMove() {
+	public Move getBestMove() {
 		HashSet<HashMap<Move, Double>> moveConfidenceSet = new HashSet<HashMap<Move, Double>>();
 		// for each bot
 		for (Bot b : botList.keySet()) {
