@@ -9,6 +9,7 @@ public class OthelloApplication {
         view = new OthelloView();
         
         model.addUpdateListener(view);
+        model.initialize();
     }
     
     public static void main(String[] args) {
