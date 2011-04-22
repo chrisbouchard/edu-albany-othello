@@ -26,4 +26,31 @@ public class Move {
     public String toString() {
         return "(" + piece + ", " + r + ", " + c + ")";
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (!(o instanceof Move)) {
+            return false;
+        }
+
+        Move m = (Move) o;
+        return piece == m.piece && r == m.r && c == m.c;
+    }
+
+    // Found this online. Not sure how great a hash it is, but it should
+    // suffice.
+    @Override
+    public int hashCode() {
+        int hash = 7;
+
+        hash = 31 * hash + (piece == null ? 0 : piece.hashCode());
+        hash = 31 * hash + r;
+        hash = 31 * hash + c;
+
+        return hash;
+    }
 }
