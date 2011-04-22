@@ -77,6 +77,23 @@ public class BoardState {
         return bs;
     }
 
+    /**
+	 * 
+	 * @param p Piece to count
+	 * @return The number of pieces of type p
+	 */
+	public int getNumPieces(Piece p) {
+		int count = 0;
+		for (int r = 0; r < ROWS; ++r) {
+			for (int c = 0; c < COLS; ++c) {
+				if (board[r][c] == p) {
+					++count;
+				}
+			}
+		}
+		return count;
+	}
+    
     public Piece getPieceAt(int r, int c) {
         if (!isInBounds(r, c)) {
             throw new IndexOutOfBoundsException();
@@ -84,7 +101,7 @@ public class BoardState {
         
         return board[r][c];
     }
-    
+
     public Set<Move> getValidMoves(Piece p) {
         Set<Move> moves = validMoves.get(p);
         
@@ -152,6 +169,7 @@ public class BoardState {
 
         return false;
     }
+    
 
     private Boolean canCaptureDirected(Piece p, int r, int c, int dr, int dc) {
         // Check if this square is in bounds
@@ -170,7 +188,6 @@ public class BoardState {
 
         return canCaptureDirected(p, r + dr, c + dc, dr, dc);
     }
-    
 
     // Check if a piece of the given color could capture a piece if placed here
     private Boolean doCapture(Piece p, int r, int c) {
@@ -182,8 +199,8 @@ public class BoardState {
 
         return false;
     }
-
-    private Boolean doCaptureDirected(Piece p, int r, int c, int dr, int dc) {
+    
+	private Boolean doCaptureDirected(Piece p, int r, int c, int dr, int dc) {
         // Check if this square is in bounds
         if (!isInBounds(r, c) || board[r][c] == null) {
             return false;
@@ -207,20 +224,6 @@ public class BoardState {
             return false;
         }
     }
-    
-	/**
-	 * 
-	 * @param p Piece to count
-	 * @return The number of pieces of type p
-	 */
-	public int getNumPieces(Piece p) {
-		int count = 0;
-		for (int r = 0; r < ROWS; ++r)
-			for (int c = 0; c < COLS; ++c)
-				if (board[r][c] != null)
-					++count;
-		return count;
-	}
     
     private void init() {
         board = new Piece[ROWS][COLS];
