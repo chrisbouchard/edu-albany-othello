@@ -6,19 +6,22 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
 
+import edu.albany.othello.bots.Bot;
+
 //import java.util.Map.Entry;
 
-public class AIBrain extends Player{
+public class AIBrain extends Player {
 	// holds the bot and weight pair
 	Map<Bot, Double> botList = new HashMap<Bot, Double>();
+	static final int maxDepth = 5;
 
 	public Move getBestMove() {
 		HashSet<HashMap<Move, Double>> moveConfidenceSet = new HashSet<HashMap<Move, Double>>();
 		// for each bot
 		for (Bot b : botList.keySet()) {
 			// all (move, confidence) pairs for b
-			HashMap<Move, Double> moveConfidences = b
-					.getMoveConfidences(getBoardState(),getDeepestBoardStates());
+			HashMap<Move, Double> moveConfidences = b.getMoveConfidences(
+					getBoardState(), getDeepestBoardStates());
 			// for each (move, confidence) pair for b
 			for (Entry<Move, Double> value : moveConfidences.entrySet()) {
 				// compute the weighted conf
@@ -43,8 +46,7 @@ public class AIBrain extends Player{
 		HashMap<Move, Double> moveWeightedConfidenceSums = new HashMap<Move, Double>();
 
 		// for each key in the first HashMap
-		for (Move m : ((HashMap<Move, Double>) moveConfidenceSet.toArray()[0])
-				.keySet()) {
+		for (Move m : (moveConfidenceSet.iterator().next()).keySet()) {
 			// calculate the totalValue for the current key
 			Double totalValue = 0.0;
 			// for each HashMap in moveConfidenceSet
@@ -77,10 +79,24 @@ public class AIBrain extends Player{
 		// TODO fill in botList
 		botList = new HashMap<Bot, Double>();
 	}
+
+	//return the list of board states
+	private Map<Move, Set<BoardState>> getDeepestBoardStatesRecursive(){
+		
+		return null;
+	}
 	
-	private Map<Piece, Map<Move, Set<BoardState>>> getDeepestBoardStates(){
-		//this.getBoardState().getValidMoves(p);
-		//this.getBoardState().getBoardFromMove(m);
+	private Map<Piece, Map<Move, Set<BoardState>>> getDeepestBoardStates() {
+		BoardState currentBoardState = getBoardState();
+		Map<Piece, Map<Move, Set<BoardState>>> deepestBoardState;
+		for (int i = 0; i < maxDepth; i++) {
+			Set<Move> moves = currentBoardState.getValidMoves(getPiece());
+			// for every possible move
+			for (Move m : moves) {
+				// get the board for the move
+				getBoardState().getBoardFromMove(m);
+			}
+		}
 		return null;
 	}
 
