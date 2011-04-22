@@ -11,5 +11,5 @@ public abstract class Bot {
 	}
 
 	//returns set of all move and confidence pairs
-	public abstract Set<HashMap<Move, Double>> getMoveConfidences(BoardState bs);
+	public abstract HashMap<Move, Double> getMoveConfidences(BoardState bs);
 }
