@@ -1,28 +1,16 @@
 package edu.albany.othello;
 
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
-
-import edu.albany.othello.event.UpdateEvent;
-import edu.albany.othello.event.UpdateListener;
 
 public class OthelloModel {
     private BoardState currentBoardState;
     private Piece currentPiece;
     private List<Move> moveList;
 
-    private Set<UpdateListener> updateListeners;
-
     public OthelloModel() {
-        updateListeners = new HashSet<UpdateListener>();
         initialize();
-    }
-
-    public void addUpdateListener(UpdateListener ul) {
-        updateListeners.add(ul);
     }
 
     public BoardState getCurrentBoardState() {
@@ -45,7 +33,7 @@ public class OthelloModel {
         currentBoardState = new BoardState();
         currentPiece = Piece.BLACK;
         moveList = new LinkedList<Move>();
-        fireUpdateEvents();
+        OthelloApplication.view.update();
     }
 
     public void makeMove(int r, int c) {
@@ -69,13 +57,7 @@ public class OthelloModel {
             }
         }
 
-        fireUpdateEvents();
-    }
-
-    private void fireUpdateEvents() {
-        UpdateEvent e = new UpdateEvent(this);
-        for (UpdateListener ul : updateListeners) {
-            ul.updatePerformed(e);
-        }
+        OthelloApplication.view.update();
+        OthelloApplication.controller.update();
     }
 }

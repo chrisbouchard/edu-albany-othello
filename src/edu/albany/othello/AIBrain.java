@@ -74,9 +74,10 @@ public class AIBrain extends Player {
 		return currentHighestPair.getKey();
 	}
 
-	public AIBrain() {
+	public AIBrain(Piece p) {
 		// TODO Auto-generated constructor stub
 		// TODO fill in botList
+	    super(p);
 		botList = new HashMap<Bot, Double>();
 	}
 
