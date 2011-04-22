@@ -8,7 +8,7 @@ import java.util.Map.Entry;
 
 //import java.util.Map.Entry;
 
-public class AIBrain {
+public class AIBrain extends Player{
 	// holds the bot and weight pair
 	Map<Bot, Double> botList = new HashMap<Bot, Double>();
 
@@ -76,11 +76,6 @@ public class AIBrain {
 		// TODO Auto-generated constructor stub
 		// TODO fill in botList
 		botList = new HashMap<Bot, Double>();
-	}
-
-	private BoardState getBoardState() {
-		// TODO get this info from othello model
-		return null;
 	}
 
 }
