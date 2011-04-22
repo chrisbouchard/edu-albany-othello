@@ -37,8 +37,11 @@ public class BoardState {
     // Create a new board state based on a given state
     private BoardState(BoardState parent, Move m) {
         // Check that the new move is in bounds and is legal
-        if (!isInBounds(m.getR(), m.getC())
-                || parent.board[m.getR()][m.getC()] != null) {
+        if (!isInBounds(m.getR(), m.getC())) {
+            throw new IndexOutOfBoundsException();
+        }
+        
+        if (parent.board[m.getR()][m.getC()] != null) {
             throw new IllegalArgumentException();
         }
 
