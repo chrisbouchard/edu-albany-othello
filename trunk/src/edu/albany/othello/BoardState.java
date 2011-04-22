@@ -208,6 +208,20 @@ public class BoardState {
         }
     }
     
+	/**
+	 * 
+	 * @param p Piece to count
+	 * @return The number of pieces of type p
+	 */
+	public int getNumPieces(Piece p) {
+		int count = 0;
+		for (int r = 0; r < ROWS; ++r)
+			for (int c = 0; c < COLS; ++c)
+				if (board[r][c] != null)
+					++count;
+		return count;
+	}
+    
     private void init() {
         board = new Piece[ROWS][COLS];
         validMoves = new HashMap<Piece, Set<Move>>();
