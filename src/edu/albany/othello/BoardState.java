@@ -101,7 +101,7 @@ public class BoardState {
         
         return board[r][c];
     }
-
+    
     public Set<Move> getValidMoves(Piece p) {
         Set<Move> moves = validMoves.get(p);
         
@@ -120,6 +120,10 @@ public class BoardState {
         }
 
         return moves;
+    }
+
+    public boolean hasValidMove(Piece p) {
+        return getValidMoves(p).size() != 0;
     }
 
     @Override
