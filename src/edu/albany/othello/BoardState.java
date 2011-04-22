@@ -24,6 +24,7 @@ public class BoardState {
     }
 
     private Piece[][] board;
+    private Set<Move> validMoves;
 
     // Create a default board state
     public BoardState() {
@@ -32,6 +33,7 @@ public class BoardState {
         board[ROWS / 2 - 1][COLS / 2] = Piece.BLACK;
         board[ROWS / 2][COLS / 2 - 1] = Piece.BLACK;
         board[ROWS / 2][COLS / 2] = Piece.WHITE;
+        validMoves = null;
     }
 
     // Create a new board state based on a given state
@@ -54,6 +56,7 @@ public class BoardState {
         }
 
         board[m.getR()][m.getC()] = m.getPiece();
+        validMoves = null;
     }
 
     // Check if a piece of the given color could capture a piece if placed here
@@ -92,17 +95,19 @@ public class BoardState {
     }
 
     public Set<Move> getValidMoves(Piece p) {
-        Set<Move> s = new HashSet<Move>();
+        if (validMoves == null) {
+            validMoves = new HashSet<Move>();
 
-        for (int r = 0; r < ROWS; ++r) {
-            for (int c = 0; c < COLS; ++c) {
-                if (board[r][c] == null && canCapture(p, r, c)) {
-                    s.add(new Move(p, r, c));
+            for (int r = 0; r < ROWS; ++r) {
+                for (int c = 0; c < COLS; ++c) {
+                    if (board[r][c] == null && canCapture(p, r, c)) {
+                        validMoves.add(new Move(p, r, c));
+                    }
                 }
             }
         }
 
-        return s;
+        return validMoves;
     }
 
     @Override
