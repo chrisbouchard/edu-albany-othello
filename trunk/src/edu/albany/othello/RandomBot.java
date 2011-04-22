@@ -15,7 +15,7 @@ public class RandomBot extends Bot {
 	public HashMap<Move, Double> getMoveConfidences(BoardState bs,
 			Map<Piece, Map<Move, Set<BoardState>>> deepestBoardStates) {
 		Random r = new Random();
-		Move[] moves = (Move[]) bs.getValidMoves(p).toArray();
+		Move[] moves = (Move[]) bs.getValidMoves(piece).toArray();
 		HashMap<Move, Double> moveConfidences = new HashMap<Move, Double>();
 		// return moves[r.nextInt(moves.length)];
 		int random = r.nextInt(moves.length);
