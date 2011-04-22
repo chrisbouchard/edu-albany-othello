@@ -10,11 +10,6 @@ public class BoardState {
     public static int ROWS = 8;
     public static int COLS = 8;
 
-    // Convenience method to check if a square is on the board
-    public static Boolean isInBounds(int r, int c) {
-        return r >= 0 && r < ROWS && c >= 0 && c < COLS;
-    }
-
     public static void main(String[] args) {
         BoardState bs = new BoardState();
         System.out.println(bs);
@@ -23,6 +18,11 @@ public class BoardState {
                 .getValidMoves(Piece.WHITE));
         System.out.println(bs.getBoardFromMove(new Move(Piece.BLACK, 2, 3))
                 .getBoardFromMove(new Move(Piece.WHITE, 4, 2)));
+    }
+
+    // Convenience method to check if a square is on the board
+    private static Boolean isInBounds(int r, int c) {
+        return r >= 0 && r < ROWS && c >= 0 && c < COLS;
     }
 
     private Piece[][] board;
@@ -62,6 +62,10 @@ public class BoardState {
     }
 
     public BoardState getBoardFromMove(Move m) {
+        if (!getValidMoves(m.getPiece()).contains(m)) {
+            throw new IllegalArgumentException();
+        }
+        
         BoardState bs = childBoards.get(m);
         
         if (bs == null) {
@@ -72,8 +76,17 @@ public class BoardState {
         return bs;
     }
 
+    public Piece getPieceAt(int r, int c) {
+        if (!isInBounds(r, c)) {
+            throw new IndexOutOfBoundsException();
+        }
+        
+        return board[r][c];
+    }
+    
     public Set<Move> getValidMoves(Piece p) {
         Set<Move> moves = validMoves.get(p);
+        
         if (moves == null) {
             moves = new HashSet<Move>();
 
@@ -90,7 +103,7 @@ public class BoardState {
 
         return moves;
     }
-    
+
     @Override
     public String toString() {
         String str = " ";
@@ -156,7 +169,7 @@ public class BoardState {
 
         return canCaptureDirected(p, r + dr, c + dc, dr, dc);
     }
-
+    
     private void init() {
         board = new Piece[ROWS][COLS];
         validMoves = new HashMap<Piece, Set<Move>>();
