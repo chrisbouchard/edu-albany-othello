@@ -23,17 +23,18 @@ public class OthelloModel {
         return currentPiece;
     }
 
-    public void makeMove(Move m) {
-        currentBoardState = currentBoardState.getBoardFromMove(m);
-        moveList.add(m);
-        currentPiece = currentPiece.getAlternate();
+    public List<Move> getMoveList() {
+        return Collections.unmodifiableList(moveList);
     }
 
     public int getTurnCounter() {
         return moveList.size();
     }
 
-    public List<Move> getMoveList() {
-        return Collections.unmodifiableList(moveList);
+    public void makeMove(int r, int c) {
+        Move m = new Move(currentPiece, r, c);
+        currentBoardState = currentBoardState.getBoardFromMove(m);
+        moveList.add(m);
+        currentPiece = currentPiece.getAlternate();
     }
 }
