@@ -5,10 +5,10 @@ import java.util.Map;
 import java.util.Set;
 
 public abstract class Bot {
-	protected Piece p;
+	protected Piece piece;
 
 	public Bot(Piece p) {
-		this.p = p;
+		this.piece = p;
 	}
 
 	// returns set of all move and confidence pairs
