@@ -1,6 +1,7 @@
 package edu.albany.othello;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
@@ -11,7 +12,8 @@ public class RandomBot extends Bot {
 	}
 
 	@Override
-	public HashMap<Move, Double> getMoveConfidences(BoardState bs) {
+	public HashMap<Move, Double> getMoveConfidences(BoardState bs,
+			Map<Piece, Map<Move, Set<BoardState>>> deepestBoardStates) {
 		Random r = new Random();
 		Move[] moves = (Move[]) bs.getValidMoves(p).toArray();
 		HashMap<Move, Double> moveConfidences = new HashMap<Move, Double>();
