@@ -15,5 +15,9 @@ public abstract class Player {
 		return p;
 	}
 
-	public abstract Move getBestMove();
+	public abstract void thinkOfMove();
+	
+	public String toString() {
+	    return String.format("[%s: %s]", p, super.toString());
+	}
 }

@@ -6,6 +6,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
 
+import org.omg.CORBA.portable.ApplicationException;
+
 import edu.albany.othello.bots.Bot;
 
 //import java.util.Map.Entry;
@@ -100,5 +102,11 @@ public class AIBrain extends Player {
 		}
 		return null;
 	}
+
+    @Override
+    public void thinkOfMove() {
+        Move m = getBestMove();
+        OthelloApplication.controller.makeMove(m);
+    }
 
 }

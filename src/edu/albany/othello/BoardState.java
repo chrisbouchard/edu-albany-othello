@@ -125,6 +125,16 @@ public class BoardState {
     public boolean hasValidMove(Piece p) {
         return getValidMoves(p).size() != 0;
     }
+    
+    public boolean isGameOver() {
+        for (Piece p : Piece.values()) {
+            if (hasValidMove(p)) {
+                return false;
+            }
+        }
+        
+        return true;
+    }
 
     @Override
     public String toString() {

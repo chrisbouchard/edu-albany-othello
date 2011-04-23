@@ -29,11 +29,18 @@ public class OthelloView {
         @Override
         public void actionPerformed(ActionEvent e) {
             System.out.println(String.format("(%d, %d)", r, c));
+            
+            if (currentHuman != null) {
+                Human h = currentHuman;
+                currentHuman = null;
+                h.makeMove(r, c);
+            }
         }
     }
 
     private JButton[][] buttons;
     private JLabel messageLabel;
+    private Human currentHuman;
 
     public void update() {
         BoardState bs = OthelloApplication.model.getCurrentBoardState();
@@ -66,6 +73,8 @@ public class OthelloView {
     }
 
     public OthelloView() {
+        currentHuman = null;
+        
         JFrame frame = new JFrame("Play Othello!");
         LayoutManager frameLayout = new BorderLayout(2, 2);
         frame.setLayout(frameLayout);
@@ -91,5 +100,9 @@ public class OthelloView {
 
         frame.pack();
         frame.setVisible(true);
+    }
+    
+    public void setCurrentHuman(Human h) {
+        currentHuman = h;
     }
 }
