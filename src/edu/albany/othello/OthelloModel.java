@@ -55,7 +55,6 @@ public class OthelloModel {
                 }
                 System.out.flush();
                 System.err.println("Game over!");
-                System.exit(0);
             }
         }
 
