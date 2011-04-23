@@ -8,8 +8,9 @@ public class OthelloApplication {
     public static OthelloView view;
     public static OthelloController controller;
     
-    static {
+    public static void main(String[] args) {
         Map<Piece, Player> players = new HashMap<Piece, Player>();
+        
         players.put(Piece.BLACK, new Human(Piece.BLACK));
         players.put(Piece.WHITE, new Human(Piece.WHITE));
         
@@ -18,9 +19,6 @@ public class OthelloApplication {
         controller = new OthelloController(players);
         
         model.initialize();
-    }
-    
-    public static void main(String[] args) {
-        // TODO: Auto-generated method stub
+        controller.start();
     }
 }

@@ -10,7 +10,9 @@ public class OthelloModel {
     private List<Move> moveList;
 
     public OthelloModel() {
-        initialize();
+        currentBoardState = new BoardState();
+        currentPiece = Piece.BLACK;
+        moveList = new LinkedList<Move>();
     }
 
     public BoardState getCurrentBoardState() {
@@ -58,6 +60,5 @@ public class OthelloModel {
         }
 
         OthelloApplication.view.update();
-        OthelloApplication.controller.update();
     }
 }
