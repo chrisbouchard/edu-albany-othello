@@ -24,7 +24,7 @@ public class Move {
 
     @Override
     public String toString() {
-        return "(" + piece + ", " + r + ", " + c + ")";
+        return String.format("(%s, %d, %d)", piece, r, c);
     }
 
     @Override
