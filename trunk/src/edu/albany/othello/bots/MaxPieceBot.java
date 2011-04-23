@@ -19,28 +19,35 @@ public class MaxPieceBot extends Bot {
 	// by all players
 	// confidence for a move will be the average confidence for a BoardState
 	@Override
-	public HashMap<Move, Double> getMoveConfidences(BoardState bs,
+	public Map<Move, Double> getMoveConfidences(BoardState bs,
 			Map<Piece, Map<Move, Set<BoardState>>> deepestBoardStates) {
 		Map<Move, Double> moveConfidences = new HashMap<Move, Double>();
 		for (Move m : deepestBoardStates.get(this.piece).keySet()) {
 
+			Map<Move, Set<BoardState>> z = deepestBoardStates.get(this.piece);
 			// get the deep BoardStates for this move
 			Set<BoardState> deepestBoardStatesSet = deepestBoardStates.get(
 					this.piece).get(m);
 
+			System.out.println("BoardStates: " + deepestBoardStates.toString());
+
 			double avgConfidence = 0;
 
 			for (BoardState deepBS : deepestBoardStatesSet) {
+				System.out.println("foobar");
 				avgConfidence += ((double) deepBS.getNumPieces(this.piece))
 						/ (deepBS.getNumPieces(this.piece) + deepBS
 								.getNumPieces(this.piece.getAlternate()));
+				System.out.println("this is " + avgConfidence);
 			}
 			avgConfidence /= deepestBoardStatesSet.size();
+			System.out.println("maxpiece says move: " + m + " with confidence "
+					+ avgConfidence);
 
 			moveConfidences.put(m, avgConfidence);
 		}
 		// TODO Auto-generated method stub
-		return null;
+		return moveConfidences;
 	}
 
 }

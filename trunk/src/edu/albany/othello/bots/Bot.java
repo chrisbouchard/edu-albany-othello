@@ -1,6 +1,5 @@
 package edu.albany.othello.bots;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -16,6 +15,6 @@ public abstract class Bot {
 	}
 
 	// returns set of all move and confidence pairs
-	public abstract HashMap<Move, Double> getMoveConfidences(BoardState bs,
+	public abstract Map<Move, Double> getMoveConfidences(BoardState bs,
 			Map<Piece, Map<Move, Set<BoardState>>> deepestBoardStates);
 }

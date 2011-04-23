@@ -14,9 +14,9 @@ public class MobilityBot extends Bot {
 	}
 
 	@Override
-	public HashMap<Move, Double> getMoveConfidences(BoardState bs,
+	public Map<Move, Double> getMoveConfidences(BoardState bs,
 			Map<Piece, Map<Move, Set<BoardState>>> deepestBoardStates) {
-		HashMap<Move, Double> moveConfidences = new HashMap<Move, Double>();
+		Map<Move, Double> moveConfidences = new HashMap<Move, Double>();
 		for (Move m : deepestBoardStates.get(this.piece).keySet()) {
 
 			// get the deep BoardStates for this move
