@@ -10,12 +10,13 @@ import java.util.Map.Entry;
 import org.omg.CORBA.portable.ApplicationException;
 
 import edu.albany.othello.bots.Bot;
+import edu.albany.othello.bots.RandomBot;
 
 //import java.util.Map.Entry;
 
 public class AIBrain extends Player {
 	// holds the bot and weight pair
-	Map<Bot, Double> botList = new HashMap<Bot, Double>();
+	Map<Bot, Double> botList;
 	static final int maxDepth = 5;
 
 	public Move getBestMove() {
@@ -82,6 +83,7 @@ public class AIBrain extends Player {
 		// TODO fill in botList
 		super(p);
 		botList = new HashMap<Bot, Double>();
+		botList.put(new RandomBot(p), 10.0);
 	}
 
 	public Map<Piece, Map<Move, Set<BoardState>>> getDeepestBoardStates() {
