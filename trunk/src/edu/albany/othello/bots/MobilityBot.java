@@ -18,8 +18,24 @@ public class MobilityBot extends Bot {
 			Map<Piece, Map<Move, Set<BoardState>>> deepestBoardStates) {
 		HashMap<Move, Double> moveConfidences = new HashMap<Move, Double>();
 		for (Move m : deepestBoardStates.get(this.piece).keySet()) {
-			moveConfidences.put(m, ((double) deepestBoardStates.get(this.piece)
-					.get(m).size() / bs.getNumPieces(null)));
+			//moveConfidences.put(m, ((double) deepestBoardStates.get(this.piece).get(m).size() / bs.getNumPieces(null)));
+			
+// NEW CODE BEGIN
+			// get the deep boardstates for this move
+			Set<BoardState> deepestBoardStatesSet = deepestBoardStates.get(
+					this.piece).get(m);
+
+			double avgConfidence = 0;
+
+			for (BoardState deepBS : deepestBoardStatesSet) {
+				avgConfidence += ((double) deepBS.getValidMoves(this.piece)
+						.size())
+						/ deepBS.getNumPieces(null);
+			}
+			avgConfidence /= deepestBoardStatesSet.size();
+
+			moveConfidences.put(m, avgConfidence);
+// NEW CODE END
 		}
 		return moveConfidences;
 	}
