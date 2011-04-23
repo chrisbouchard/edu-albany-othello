@@ -19,17 +19,16 @@ public class AIBrain extends Player {
 	static final int maxDepth = 3;
 
 	public Move getBestMove() {
-		HashSet<HashMap<Move, Double>> moveConfidenceSet = new HashSet<HashMap<Move, Double>>();
+		Set<Map<Move, Double>> moveConfidenceSet = new HashSet<Map<Move, Double>>();
 		// for each bot
 		for (Bot b : botList.keySet()) {
 			// all (move, confidence) pairs for b
-			HashMap<Move, Double> moveConfidences = b.getMoveConfidences(
+			Map<Move, Double> moveConfidences = b.getMoveConfidences(
 					getBoardState(), getDeepestBoardStates());
 			// for each (move, confidence) pair for b
 			for (Entry<Move, Double> value : moveConfidences.entrySet()) {
 				// compute the weighted conf
 				value.setValue(value.getValue() * botList.get(b));
-				// HashSet<Move, Double> moveWeightedConfidence;
 			}
 			// by this point, moveConfidences holds the weighted confs for b
 			// moveConfidences: (m1, wc1) (m2, wc2)
@@ -53,7 +52,7 @@ public class AIBrain extends Player {
 			// calculate the totalValue for the current key
 			Double totalValue = 0.0;
 			// for each HashMap in moveConfidenceSet
-			for (HashMap<Move, Double> botHashMap : moveConfidenceSet) {
+			for (Map<Move, Double> botHashMap : moveConfidenceSet) {
 				// add the value to the running total
 				totalValue += botHashMap.get(m);
 			}
@@ -85,6 +84,7 @@ public class AIBrain extends Player {
 		botList.put(new RandomBot(p), 2.0);
 		botList.put(new MobilityBot(p), 10.0);
 		botList.put(new AntiMobilityBot(p), 10.0);
+		botList.put(new MaxPieceBot(p), 10.0);
 	}
 
 	public Map<Piece, Map<Move, Set<BoardState>>> getDeepestBoardStates() {
@@ -101,7 +101,6 @@ public class AIBrain extends Player {
 			BoardState childBoardState = getBoardState().getBoardFromMove(m);
 			Map<Piece, Set<BoardState>> childBoardStateTree = getChildBoardStateTree(
 					childBoardState, getPiece().getAlternate(), maxDepth);
-			// ansBlack.get(Piece.BLACK).addAll(childBoardStateTree.get(Piece.BLACK));
 			ansBlack.put(m, childBoardStateTree.get(Piece.BLACK));
 			ansWhite.put(m, childBoardStateTree.get(Piece.WHITE));
 		}
@@ -155,19 +154,21 @@ public class AIBrain extends Player {
 				childrenBSTreeWhite
 						.addAll(childBoardStateTree.get(Piece.WHITE));
 			}
-			childrenBoardStateTree.put(Piece.WHITE, childrenBSTreeWhite);
 			childrenBoardStateTree.put(Piece.BLACK, childrenBSTreeBlack);
+			childrenBoardStateTree.put(Piece.WHITE, childrenBSTreeWhite);
 			// at this point, childrenBoardStateTree should contain the set of
 			// all black/white boards at the deepest level
 
 			// check if the black set is empty, if it is, then no children were
 			// black so use the root
-			if (childrenBoardStateTree.get(Piece.BLACK).isEmpty()) {
+			if (childrenBoardStateTree.get(Piece.BLACK).isEmpty())
 				blackSet.addAll(rootBlackSet);
-			}
-			if (childrenBoardStateTree.get(Piece.BLACK).isEmpty()) {
+			else
+				blackSet.addAll(childrenBoardStateTree.get(Piece.BLACK));
+			if (childrenBoardStateTree.get(Piece.WHITE).isEmpty())
 				whiteSet.addAll(rootWhiteSet);
-			}
+			else
+				whiteSet.addAll(childrenBoardStateTree.get(Piece.WHITE));
 		}
 
 		ans.put(Piece.BLACK, blackSet);
