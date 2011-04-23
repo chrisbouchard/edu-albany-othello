@@ -20,7 +20,7 @@ public class AntiMobilityBot extends Bot {
 		for (Move m : deepestBoardStates.get(this.piece.getAlternate())
 				.keySet()) {
 
-			// get the deep boardstates for this move
+			// get the deep BoardStates for this move
 			Set<BoardState> deepestBoardStatesSet = deepestBoardStates.get(
 					this.piece.getAlternate()).get(m);
 
