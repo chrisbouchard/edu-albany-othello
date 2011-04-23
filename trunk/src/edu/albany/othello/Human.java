@@ -1,5 +1,7 @@
 package edu.albany.othello;
 
+import java.util.Scanner;
+
 public class Human extends Player {
     
     public Human(Piece p) {
@@ -8,8 +10,10 @@ public class Human extends Player {
     
     @Override
     public Move getBestMove() {
-        // TODO Auto-generated method stub
-        return null;
+        Scanner s = new Scanner(System.in);
+        
+        //TODO: Get this from the View
+        return new Move(getPiece(), s.nextInt(), s.nextInt());
     }
 
 }
