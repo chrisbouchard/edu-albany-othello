@@ -12,7 +12,8 @@ public class OthelloApplication {
         Map<Piece, Player> players = new HashMap<Piece, Player>();
         
         players.put(Piece.BLACK, new Human(Piece.BLACK));
-        players.put(Piece.WHITE, new Human(Piece.WHITE));
+        //players.put(Piece.WHITE, new Human(Piece.WHITE));
+        players.put(Piece.WHITE, new AIBrain(Piece.WHITE));
         
         model = new OthelloModel();
         view = new OthelloView();
