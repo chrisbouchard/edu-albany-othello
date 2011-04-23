@@ -29,7 +29,7 @@ public class OthelloView {
         @Override
         public void actionPerformed(ActionEvent e) {
             System.out.println(String.format("(%d, %d)", r, c));
-            
+
             if (currentHuman != null) {
                 Human h = currentHuman;
                 currentHuman = null;
@@ -68,13 +68,24 @@ public class OthelloView {
             }
         }
 
-        messageLabel.setText("Current player: "
-                + OthelloApplication.model.getCurrentPiece());
+        String message = "";
+
+        for (Piece p : Piece.values()) {
+            message += String.format("[%c] %s: %d    ",
+                    ((p == OthelloApplication.model.getCurrentPiece()) ? '*'
+                            : ' '), p, OthelloApplication.model
+                            .getCurrentBoardState().getNumPieces(p));
+        }
+
+        message += OthelloApplication.model.getCurrentBoardState().isGameOver() ? "GAME OVER!"
+                : "";
+
+        messageLabel.setText(message);
     }
 
     public OthelloView() {
         currentHuman = null;
-        
+
         JFrame frame = new JFrame("Play Othello!");
         LayoutManager frameLayout = new BorderLayout(2, 2);
         frame.setLayout(frameLayout);
@@ -101,7 +112,7 @@ public class OthelloView {
         frame.pack();
         frame.setVisible(true);
     }
-    
+
     public void setCurrentHuman(Human h) {
         currentHuman = h;
     }
