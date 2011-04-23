@@ -83,8 +83,8 @@ public class AIBrain extends Player {
 		super(p);
 		botList = new HashMap<Bot, Double>();
 		botList.put(new RandomBot(p), 10.0);
-//		botList.put(new MobilityBot(p), 10.0);
-//		botList.put(new AntiMobilityBot(p), 10.0);
+		botList.put(new MobilityBot(p), 10.0);
+		botList.put(new AntiMobilityBot(p), 10.0);
 	}
 
 	public Map<Piece, Map<Move, Set<BoardState>>> getDeepestBoardStates() {
