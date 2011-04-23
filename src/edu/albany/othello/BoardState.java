@@ -32,7 +32,7 @@ public class BoardState {
     // Create a default board state
     public BoardState() {
         init();
-        
+
         board[ROWS / 2 - 1][COLS / 2 - 1] = Piece.WHITE;
         board[ROWS / 2 - 1][COLS / 2] = Piece.BLACK;
         board[ROWS / 2][COLS / 2 - 1] = Piece.BLACK;
@@ -45,7 +45,7 @@ public class BoardState {
         if (!isInBounds(m.getR(), m.getC())) {
             throw new IndexOutOfBoundsException();
         }
-        
+
         if (parent.board[m.getR()][m.getC()] != null) {
             throw new IllegalArgumentException();
         }
@@ -66,45 +66,46 @@ public class BoardState {
         if (!getValidMoves(m.getPiece()).contains(m)) {
             throw new IllegalArgumentException();
         }
-        
+
         BoardState bs = childBoards.get(m);
-        
+
         if (bs == null) {
             bs = new BoardState(this, m);
             childBoards.put(m, bs);
         }
-        
+
         return bs;
     }
 
     /**
-	 * 
-	 * @param p Piece to count
-	 * @return The number of pieces of type p
-	 */
-	public int getNumPieces(Piece p) {
-		int count = 0;
-		for (int r = 0; r < ROWS; ++r) {
-			for (int c = 0; c < COLS; ++c) {
-				if (board[r][c] == p) {
-					++count;
-				}
-			}
-		}
-		return count;
-	}
-    
+     * 
+     * @param p
+     *            Piece to count
+     * @return The number of pieces of type p
+     */
+    public int getNumPieces(Piece p) {
+        int count = 0;
+        for (int r = 0; r < ROWS; ++r) {
+            for (int c = 0; c < COLS; ++c) {
+                if (board[r][c] == p) {
+                    ++count;
+                }
+            }
+        }
+        return count;
+    }
+
     public Piece getPieceAt(int r, int c) {
         if (!isInBounds(r, c)) {
             throw new IndexOutOfBoundsException();
         }
-        
+
         return board[r][c];
     }
-    
+
     public Set<Move> getValidMoves(Piece p) {
         Set<Move> moves = validMoves.get(p);
-        
+
         if (moves == null) {
             moves = new HashSet<Move>();
 
@@ -115,7 +116,7 @@ public class BoardState {
                     }
                 }
             }
-            
+
             validMoves.put(p, moves);
         }
 
@@ -125,14 +126,14 @@ public class BoardState {
     public boolean hasValidMove(Piece p) {
         return getValidMoves(p).size() != 0;
     }
-    
+
     public boolean isGameOver() {
         for (Piece p : Piece.values()) {
             if (hasValidMove(p)) {
                 return false;
             }
         }
-        
+
         return true;
     }
 
@@ -175,7 +176,7 @@ public class BoardState {
     private Boolean canCapture(Piece p, int r, int c) {
         for (int dr = -1; dr <= 1; ++dr) {
             for (int dc = -1; dc <= 1; ++dc) {
-                if (canCaptureDirected(p, r + dr, c + dc, dr, dc)) {
+                if (canCaptureDirected(p, r + dr, c + dc, dr, dc, false)) {
                     return true;
                 }
             }
@@ -183,54 +184,49 @@ public class BoardState {
 
         return false;
     }
-    
 
-    private Boolean canCaptureDirected(Piece p, int r, int c, int dr, int dc) {
+    private Boolean canCaptureDirected(Piece p, int r, int c, int dr, int dc,
+            boolean seenOther) {
         // Check if this square is in bounds
         if (!isInBounds(r, c) || board[r][c] == null) {
             return false;
         }
 
-        // Check if the next square is in bounds
-        if (!isInBounds(r + dr, c + dc) || board[r + dr][c + dc] == null) {
-            return false;
+        // If this is our color, we can capture if we've crossed another color
+        if (board[r][c] == p) {
+            return seenOther;
         }
 
-        if (board[r][c] != p && board[r + dr][c + dc] == p) {
-            return true;
-        }
-
-        return canCaptureDirected(p, r + dr, c + dc, dr, dc);
+        // Otherwise, keep going
+        return canCaptureDirected(p, r + dr, c + dc, dr, dc, true);
     }
 
     // Check if a piece of the given color could capture a piece if placed here
     private Boolean doCapture(Piece p, int r, int c) {
         for (int dr = -1; dr <= 1; ++dr) {
             for (int dc = -1; dc <= 1; ++dc) {
-                doCaptureDirected(p, r + dr, c + dc, dr, dc);
+                doCaptureDirected(p, r + dr, c + dc, dr, dc, false);
             }
         }
 
         return false;
     }
-    
-	private Boolean doCaptureDirected(Piece p, int r, int c, int dr, int dc) {
+
+    private Boolean doCaptureDirected(Piece p, int r, int c, int dr, int dc,
+            boolean seenOther) {
         // Check if this square is in bounds
         if (!isInBounds(r, c) || board[r][c] == null) {
             return false;
         }
 
-        // Check if the next square is in bounds
-        if (!isInBounds(r + dr, c + dc) || board[r + dr][c + dc] == null) {
-            return false;
+        // If this is our color, we can capture if we've crossed another color
+        if (board[r][c] == p) {
+            return seenOther;
         }
 
-        if (board[r][c] != p && board[r + dr][c + dc] == p) {
-            board[r][c] = p;
-            return true;
-        }
-
-        if (doCaptureDirected(p, r + dr, c + dc, dr, dc)) {
+        // Otherwise, keep going
+        if (doCaptureDirected(p, r + dr, c + dc, dr, dc, true)) {
+            // We can capture, so capture this one
             board[r][c] = p;
             return true;
         }
@@ -238,7 +234,7 @@ public class BoardState {
             return false;
         }
     }
-    
+
     private void init() {
         board = new Piece[ROWS][COLS];
         validMoves = new HashMap<Piece, Set<Move>>();
