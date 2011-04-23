@@ -17,11 +17,25 @@ public class AntiMobilityBot extends Bot {
 	public HashMap<Move, Double> getMoveConfidences(BoardState bs,
 			Map<Piece, Map<Move, Set<BoardState>>> deepestBoardStates) {
 		HashMap<Move, Double> moveConfidences = new HashMap<Move, Double>();
-		for (Move m : deepestBoardStates.get(this.piece.getAlternate()).keySet()) {
-			moveConfidences.put(m, 1-((double) deepestBoardStates.get(this.piece.getAlternate())
-					.get(m).size() / bs.getNumPieces(null)));
+		for (Move m : deepestBoardStates.get(this.piece.getAlternate())
+				.keySet()) {
+
+			// get the deep boardstates for this move
+			Set<BoardState> deepestBoardStatesSet = deepestBoardStates.get(
+					this.piece.getAlternate()).get(m);
+
+			double avgConfidence = 0;
+
+			for (BoardState deepBS : deepestBoardStatesSet) {
+				avgConfidence += ((double) deepBS.getValidMoves(
+						this.piece.getAlternate()).size())
+						/ deepBS.getNumPieces(null);
+			}
+			avgConfidence /= deepestBoardStatesSet.size();
+
+			moveConfidences.put(m, 1 - avgConfidence);
+
 		}
 		return moveConfidences;
 	}
-	
 }
