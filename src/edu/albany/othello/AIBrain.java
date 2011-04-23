@@ -120,7 +120,7 @@ public class AIBrain extends Player {
 
 		// if the current player must pass their turn and the game is not over
 		// yet, switch turns
-		if (!bs.hasValidMove(turn) && bs.gameNotOver()) {
+		if (!bs.hasValidMove(turn) && !bs.isGameOver()) {
 			turn = turn.getAlternate();
 		}
 
