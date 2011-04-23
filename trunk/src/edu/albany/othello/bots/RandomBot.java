@@ -21,13 +21,6 @@ public class RandomBot extends Bot {
 		Random r = new Random();
 		//Move[] moves = (Move[]) bs.getValidMoves(piece).toArray();
 		Move[] moves = (Move[]) bs.getValidMoves(piece).toArray(new Move[0]);
-		
-		
-		//Object[] moveso = (Move[]) bs.getValidMoves(piece).toArray();
-		//System.out.println(moveso[0]);
-		//System.out.flush();
-		//Move[] moves = (Move[]) moveso;
-		//Set<Move> moves = bs.getValidMoves(piece);
 		HashMap<Move, Double> moveConfidences = new HashMap<Move, Double>();
 		// return moves[r.nextInt(moves.length)];
 		int random = r.nextInt(moves.length);
@@ -36,7 +29,9 @@ public class RandomBot extends Bot {
 				moveConfidences.put(moves[i], 1.0);
 			else
 				moveConfidences.put(moves[i], 0.0);
+			System.out.println("moving to position: " + moves[i] + " with confidence " + moveConfidences.get(moves[i]));
 		}
+		
 		return moveConfidences;
 	}
 
