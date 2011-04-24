@@ -111,6 +111,7 @@ public class AIBrain extends Player {
 		return ans;
 	}
 
+	// TODO make this function NOT RECURSIVE - it uses too much memory
 	// return the set of deepest BoardStates for each Piece that are no more
 	// than depth levels deep
 	// turn says whos turn it is to move on the BoardState bs
