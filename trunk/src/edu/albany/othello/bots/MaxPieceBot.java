@@ -6,7 +6,6 @@ import java.util.Set;
 
 import edu.albany.othello.BoardState;
 import edu.albany.othello.Move;
-import edu.albany.othello.MoveConfidence;
 import edu.albany.othello.Piece;
 
 public class MaxPieceBot extends Bot {
