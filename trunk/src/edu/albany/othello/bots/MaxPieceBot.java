@@ -29,20 +29,14 @@ public class MaxPieceBot extends Bot {
 			Set<BoardState> deepestBoardStatesSet = deepestBoardStates.get(
 					this.piece).get(m);
 
-			System.out.println("BoardStates: " + deepestBoardStates.toString());
-
 			double avgConfidence = 0;
 
 			for (BoardState deepBS : deepestBoardStatesSet) {
-				System.out.println("foobar");
 				avgConfidence += ((double) deepBS.getNumPieces(this.piece))
 						/ (deepBS.getNumPieces(this.piece) + deepBS
 								.getNumPieces(this.piece.getAlternate()));
-				System.out.println("this is " + avgConfidence);
 			}
 			avgConfidence /= deepestBoardStatesSet.size();
-			System.out.println("maxpiece says move: " + m + " with confidence "
-					+ avgConfidence);
 
 			moveConfidences.put(m, avgConfidence);
 		}

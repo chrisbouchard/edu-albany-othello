@@ -29,8 +29,6 @@ public class RandomBot extends Bot {
 				moveConfidences.put(moves[i], 1.0);
 			else
 				moveConfidences.put(moves[i], 0.0);
-			System.out.println("moving to position: " + moves[i]
-					+ " with confidence " + moveConfidences.get(moves[i]));
 		}
 
 		return moveConfidences;
