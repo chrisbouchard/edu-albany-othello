@@ -76,6 +76,7 @@ public class AIBrain extends Player {
 		return currentHighestPair.getKey();
 	}
 
+	// Creates an AIBrain that uses all bots at predetermined weights
 	public AIBrain(Piece p) {
 		// TODO Auto-generated constructor stub
 		// TODO fill in botList
@@ -85,6 +86,12 @@ public class AIBrain extends Player {
 		botList.put(new MobilityBot(p), 10.0);
 		botList.put(new AntiMobilityBot(p), 10.0);
 		botList.put(new MaxPieceBot(p), 10.0);
+	}
+
+	// Creates an AIBrain that uses the given bots with their given weights
+	public AIBrain(Piece p, Map<Bot, Double> botWeight) {
+		super(p);
+		botList = botWeight;
 	}
 
 	public Map<Piece, Map<Move, Set<BoardState>>> getDeepestBoardStates() {
