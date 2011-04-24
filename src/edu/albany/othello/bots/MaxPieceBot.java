@@ -21,13 +21,13 @@ public class MaxPieceBot extends Bot {
 	@Override
 	public Map<Move, Double> getMoveConfidences(BoardState bs,
 			Map<Piece, Map<Move, Set<BoardState>>> deepestBoardStates) {
+		
 		Map<Move, Double> moveConfidences = new HashMap<Move, Double>();
+		
 		for (Move m : deepestBoardStates.get(this.piece).keySet()) {
 
-			Map<Move, Set<BoardState>> z = deepestBoardStates.get(this.piece);
 			// get the deep BoardStates for this move
-			Set<BoardState> deepestBoardStatesSet = deepestBoardStates.get(
-					this.piece).get(m);
+			Set<BoardState> deepestBoardStatesSet = deepestBoardStates.get(this.piece).get(m);
 
 			double avgConfidence = 0;
 
@@ -40,7 +40,6 @@ public class MaxPieceBot extends Bot {
 
 			moveConfidences.put(m, avgConfidence);
 		}
-		// TODO Auto-generated method stub
 		return moveConfidences;
 	}
 
