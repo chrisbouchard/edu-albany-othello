@@ -92,15 +92,6 @@ public class AIBrain extends Player {
 		super(p);
 		botList = new HashMap<Bot, Double>(botWeight);
 	}
-	
-	public AIBrain(Piece p, Map.Entry<Bot, Double>... botWeights) {
-	    super(p);
-	    botList = new HashMap<Bot, Double>();
-	    
-	    for (Map.Entry<Bot, Double> e : botWeights) {
-	        botList.put(e.getKey(), e.getValue());
-	    }
-	}
 
 	public Map<Piece, Map<Move, Set<BoardState>>> getDeepestBoardStates() {
 		Map<Piece, Map<Move, Set<BoardState>>> ans = new HashMap<Piece, Map<Move, Set<BoardState>>>();

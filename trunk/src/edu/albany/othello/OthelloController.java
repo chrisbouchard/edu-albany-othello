@@ -1,5 +1,6 @@
 package edu.albany.othello;
 
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -15,6 +16,7 @@ public class OthelloController {
     public OthelloController(Map<Piece, Player> players) {
         waitingOnMove = false;
         this.players = players;
+        this.gameOverListeners = new HashSet<GameOverListener>();
     }
 
     public void makeMove(Move m) {
@@ -36,6 +38,8 @@ public class OthelloController {
     }
 
     public void start() {
+        OthelloApplication.model.initialize();
+        
         while (!OthelloApplication.model.getCurrentBoardState().isGameOver()) {
             if (!waitingOnMove) {
                 waitingOnMove = true;
