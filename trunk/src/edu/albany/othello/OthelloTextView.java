@@ -7,6 +7,11 @@ public class OthelloTextView implements OthelloView {
         @Override
         public void run() {
             Scanner sc = new Scanner(System.in);
+            
+            if (!beQuiet) {
+                System.out.print("Enter a move: ");
+            }
+            
             int r = sc.nextInt();
             int c = sc.nextInt();
             Human h = currentHuman;
@@ -17,9 +22,15 @@ public class OthelloTextView implements OthelloView {
     }
 
     private Human currentHuman;
+    private boolean beQuiet;
 
     public OthelloTextView() {
         currentHuman = null;
+        beQuiet = false;
+    }
+    
+    public OthelloTextView(boolean beQuiet) {
+        this.beQuiet = beQuiet;
     }
 
     public void setCurrentHuman(Human h) {
@@ -28,6 +39,10 @@ public class OthelloTextView implements OthelloView {
     }
 
     public void update() {
+        if (beQuiet) {
+            return;
+        }
+        
         BoardState bs = OthelloApplication.model.getCurrentBoardState();
         String message = "";
 

@@ -28,8 +28,8 @@ public class AbsoluteWinLoseBot extends Bot {
             boolean isLose = true;
 
             for (BoardState deepBS : deepestBoardStatesSet) {
-                isWin &= deepBS.isWinForPiece(this.piece);
-                isLose &= deepBS.isWinForPiece(this.piece.getAlternate());
+                isWin &= deepBS.getWinningPiece() == this.piece;
+                isLose &= deepBS.getWinningPiece() == this.piece.getAlternate();
             }
 
             moveConfidences.put(m, (isWin ? 1.0 : 0.0) + (isLose ? -1.0 : 0.0));

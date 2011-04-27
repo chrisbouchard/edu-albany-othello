@@ -5,6 +5,8 @@ import java.util.Map;
 
 import edu.albany.othello.bots.Bot;
 import edu.albany.othello.bots.RandomBot;
+import edu.albany.othello.event.GameOverEvent;
+import edu.albany.othello.event.GameOverListener;
 
 public class OthelloApplication {
     public static OthelloModel model;
@@ -23,8 +25,15 @@ public class OthelloApplication {
         
         model = new OthelloModel();
         //view = new OthelloSwingView();
-        view = new OthelloTextView();
+        view = new OthelloTextView(true);
         controller = new OthelloController(players);
+        
+        controller.addGameOverListener(new GameOverListener() {
+            @Override
+            public void gameOver(GameOverEvent e) {
+                System.out.println(String.format("%s wins!", e.getWinnerPiece()));
+            }
+        });
         
         model.initialize();
         controller.start();
