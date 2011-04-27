@@ -45,6 +45,5 @@ public class OthelloApplication {
 					+ RandomWin + ".  Total games played: " + numGames
 					+ ".  AI won " + (double) AIWin / numGames * 100 + "%");
 		}
-
 	}
 }

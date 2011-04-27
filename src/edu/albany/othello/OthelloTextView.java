@@ -32,6 +32,12 @@ public class OthelloTextView implements OthelloView {
     public OthelloTextView(boolean beQuiet) {
         this.beQuiet = beQuiet;
     }
+    
+    public void displayMessage(String msg) {
+        if (!beQuiet) {
+            System.out.println(msg);
+        }
+    }
 
     public void setCurrentHuman(Human h) {
         currentHuman = h;
