@@ -16,7 +16,8 @@ public class OthelloApplication {
         players.put(Piece.WHITE, new AIBrain(Piece.WHITE));
         
         model = new OthelloModel();
-        view = new OthelloView();
+        //view = new OthelloSwingView();
+        view = new OthelloTextView();
         controller = new OthelloController(players);
         
         model.initialize();
