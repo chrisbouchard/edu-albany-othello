@@ -24,7 +24,7 @@ public class BoardState {
     }
 
     // Convenience method to check if a square is on the board
-    private static Boolean isInBounds(int r, int c) {
+    public static Boolean isInBounds(int r, int c) {
         return r >= 0 && r < ROWS && c >= 0 && c < COLS;
     }
 

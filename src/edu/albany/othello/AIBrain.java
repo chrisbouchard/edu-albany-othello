@@ -6,8 +6,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
 
-import org.omg.CORBA.portable.ApplicationException;
-
 import edu.albany.othello.bots.*;
 
 //import java.util.Map.Entry;
