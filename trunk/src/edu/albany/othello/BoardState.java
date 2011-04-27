@@ -39,7 +39,29 @@ public class BoardState {
         board[ROWS / 2][COLS / 2] = Piece.WHITE;
     }
 
+    // Mostly for testing. Create a new board state absolutely
+    public BoardState(Piece[][] board) {
+        if (board.length != ROWS) {
+            throw new IllegalArgumentException();
+        }
+
+        for (int r = 0; r < ROWS; ++r) {
+            if (board[r].length != COLS) {
+                throw new IllegalArgumentException();
+            }
+        }
+
+        init();
+
+        for (int r = 0; r < ROWS; ++r) {
+            for (int c = 0; c < COLS; ++c) {
+                this.board[r][c] = board[r][c];
+            }
+        }
+    }
+
     // Create a new board state based on a given state
+    // Private because new boards should be created using getBoardFromMove()
     private BoardState(BoardState parent, Move m) {
         // Check that the new move is in bounds and is legal
         if (!isInBounds(m.getR(), m.getC())) {
@@ -135,6 +157,11 @@ public class BoardState {
         }
 
         return true;
+    }
+
+    public boolean isWinForPiece(Piece p) {
+        return isGameOver()
+                && (getNumPieces(p) > getNumPieces(p.getAlternate()));
     }
 
     @Override
