@@ -1,22 +1,14 @@
 package edu.albany.othello;
 
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
-
-import edu.albany.othello.event.GameOverEvent;
-import edu.albany.othello.event.GameOverListener;
 
 public class OthelloController {
     private Map<Piece, Player> players;
     private boolean waitingOnMove;
 
-    private Set<GameOverListener> gameOverListeners;
-
     public OthelloController(Map<Piece, Player> players) {
         waitingOnMove = false;
         this.players = players;
-        this.gameOverListeners = new HashSet<GameOverListener>();
     }
 
     public void makeMove(Move m) {
@@ -37,7 +29,7 @@ public class OthelloController {
         }
     }
 
-    public void start() {
+    public Piece playGame() {
         OthelloApplication.model.initialize();
         
         while (!OthelloApplication.model.getCurrentBoardState().isGameOver()) {
@@ -47,20 +39,8 @@ public class OthelloController {
                         .thinkOfMove();
             }
         }
-
-        for (GameOverListener listener : gameOverListeners) {
-            BoardState finalBoard = OthelloApplication.model
-                    .getCurrentBoardState();
-            listener.gameOver(new GameOverEvent(this, finalBoard, finalBoard
-                    .getWinningPiece()));
-        }
-    }
-
-    public void addGameOverListener(GameOverListener listener) {
-        gameOverListeners.add(listener);
-    }
-
-    public void removeGameOverListener(GameOverListener listener) {
-        gameOverListeners.remove(listener);
+        
+        BoardState finalBoard = OthelloApplication.model.getCurrentBoardState();
+        return finalBoard.getWinningPiece();
     }
 }
