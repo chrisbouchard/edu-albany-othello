@@ -88,6 +88,7 @@ public class BoardState {
     }
 
     public BoardState getBoardFromMove(Move m) {
+        /*
         if (!getValidMoves(m.getPiece()).contains(m)) {
             throw new IllegalArgumentException();
         }
@@ -100,6 +101,9 @@ public class BoardState {
         }
 
         return bs;
+        */
+        
+        return new BoardState(this, m);
     }
 
     /**
