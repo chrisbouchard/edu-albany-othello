@@ -90,7 +90,16 @@ public class AIBrain extends Player {
 	// Creates an AIBrain that uses the given bots with their given weights
 	public AIBrain(Piece p, Map<Bot, Double> botWeight) {
 		super(p);
-		botList = botWeight;
+		botList = new HashMap<Bot, Double>(botWeight);
+	}
+	
+	public AIBrain(Piece p, Map.Entry<Bot, Double>... botWeights) {
+	    super(p);
+	    botList = new HashMap<Bot, Double>();
+	    
+	    for (Map.Entry<Bot, Double> e : botWeights) {
+	        botList.put(e.getKey(), e.getValue());
+	    }
 	}
 
 	public Map<Piece, Map<Move, Set<BoardState>>> getDeepestBoardStates() {

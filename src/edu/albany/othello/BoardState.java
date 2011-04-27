@@ -162,9 +162,16 @@ public class BoardState {
         return true;
     }
 
-    public boolean isWinForPiece(Piece p) {
-        return isGameOver()
-                && (getNumPieces(p) > getNumPieces(p.getAlternate()));
+    public Piece getWinningPiece() {
+        if (isGameOver()) {
+            for (Piece p : Piece.values()) {
+                if (getNumPieces(p) > getNumPieces(p.getAlternate())) {
+                    return p;
+                }
+            }
+        }
+        
+        return null;
     }
 
     @Override
