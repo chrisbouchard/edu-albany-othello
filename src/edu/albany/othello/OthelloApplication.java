@@ -28,13 +28,7 @@ public class OthelloApplication {
         view = new OthelloTextView(true);
         controller = new OthelloController(players);
         
-        controller.addGameOverListener(new GameOverListener() {
-            @Override
-            public void gameOver(GameOverEvent e) {
-                System.out.println(String.format("%s wins!", e.getWinnerPiece()));
-            }
-        });
-        
-        controller.start();
+        Piece winningPiece = controller.playGame();
+        System.out.println(winningPiece + " wins!");
     }
 }
