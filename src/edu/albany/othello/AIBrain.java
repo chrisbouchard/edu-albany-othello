@@ -85,7 +85,7 @@ public class AIBrain extends Player {
 		botList.put(new MobilityBot(p), 10.0);
 		botList.put(new AntiMobilityBot(p), 10.0);
 		botList.put(new MaxPieceBot(p), 10.0);
-		botList.put(new AbsoluteWinBot(p), 10.0);
+		botList.put(new AbsoluteWinBot(p), Double.MAX_VALUE);
 	}
 
 	// Creates an AIBrain that uses the given bots with their given weights
