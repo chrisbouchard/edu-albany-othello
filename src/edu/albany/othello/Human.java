@@ -1,7 +1,5 @@
 package edu.albany.othello;
 
-import java.util.Scanner;
-
 public class Human extends Player {
     
     public Human(Piece p) {
