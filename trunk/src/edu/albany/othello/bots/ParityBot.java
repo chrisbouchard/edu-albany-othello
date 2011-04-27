@@ -11,7 +11,7 @@ import edu.albany.othello.Piece;
 
 //favors moves that move into a region with an odd number of open spots in the current BoardState
 //the bot becomes more confident as the game goes on
-//gameDuration = #turn/64
+//gameDuration = #turn/60
 //emptyPieces = number of empty pieces in a region
 //favor = -1 if even, 1 if odd
 //confidence = gameDuration * favor / emptyPieces
@@ -19,7 +19,6 @@ public class ParityBot extends Bot {
 
 	public ParityBot(Piece p) {
 		super(p);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -28,7 +27,7 @@ public class ParityBot extends Bot {
 
 		Map<Move, Double> moveConfidences = new HashMap<Move, Double>();
 		double gameDuration = (bs.getNumPieces(this.piece) + bs
-				.getNumPieces(this.piece.getAlternate())) / 64;
+				.getNumPieces(this.piece.getAlternate())) / 60;
 
 		// for each move
 		for (Move m : deepestBoardStates.get(this.piece).keySet()) {
