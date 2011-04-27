@@ -12,17 +12,14 @@ public class OthelloController {
     }
 
     public void makeMove(Move m) {
-        //System.out.println(String.format("%d, %d", m.getR(), m.getC()));
-
         try {
             OthelloApplication.model.makeMove(m.getR(), m.getC());
-            //System.out.println("Ok!");
         }
         catch (IndexOutOfBoundsException ex) {
-            //System.out.println("Out of bounds!");
+            OthelloApplication.view.displayMessage("Out of bounds!");
         }
         catch (IllegalArgumentException ex) {
-            //System.out.println("Bad move!");
+            OthelloApplication.view.displayMessage("Bad move!");
         }
         finally {
             waitingOnMove = false;

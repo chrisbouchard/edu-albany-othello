@@ -12,8 +12,8 @@ import edu.albany.othello.bots.*;
 
 public class AIBrain extends Player {
 	// holds the bot and weight pair
-	Map<Bot, Double> botList;
-	static final int maxDepth = 3;
+	private Map<Bot, Double> botList;
+	private static final int maxDepth = 3;
 
 	public Move getBestMove() {
 		Set<Map<Move, Double>> moveConfidenceSet = new HashSet<Map<Move, Double>>();

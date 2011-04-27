@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /*
@@ -38,6 +39,7 @@ public class OthelloSwingView implements OthelloView {
         }
     }
 
+    private JFrame frame;
     private JButton[][] buttons;
     private JLabel messageLabel;
     private Human currentHuman;
@@ -45,7 +47,7 @@ public class OthelloSwingView implements OthelloView {
     public OthelloSwingView() {
         currentHuman = null;
 
-        JFrame frame = new JFrame("Play Othello!");
+        frame = new JFrame("Play Othello!");
         LayoutManager frameLayout = new BorderLayout(2, 2);
         frame.setLayout(frameLayout);
 
@@ -70,6 +72,10 @@ public class OthelloSwingView implements OthelloView {
 
         frame.pack();
         frame.setVisible(true);
+    }
+    
+    public void displayMessage(String msg) {
+        JOptionPane.showMessageDialog(frame, msg);
     }
 
     public void setCurrentHuman(Human h) {
