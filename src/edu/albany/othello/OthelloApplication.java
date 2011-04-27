@@ -26,9 +26,12 @@ public class OthelloApplication {
 		view = new OthelloTextView(true);
 		controller = new OthelloController(players);
 
+		
 		int numGames = 0;
 		int AIWin = 0;
 		int RandomWin = 0;
+		
+		//run the game over and over
 		while (true) {
 			numGames++;
 			Piece winningPiece = controller.playGame();
