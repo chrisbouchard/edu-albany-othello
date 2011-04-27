@@ -83,6 +83,7 @@ public class AIBrain extends Player {
 		botList.put(new MobilityBot(p), 10.0);
 		botList.put(new AntiMobilityBot(p), 10.0);
 		botList.put(new MaxPieceBot(p), 10.0);
+		botList.put(new ParityBot(p), 10.0);
 		botList.put(new AbsoluteWinLoseBot(p), Double.MAX_VALUE);
 	}
 
