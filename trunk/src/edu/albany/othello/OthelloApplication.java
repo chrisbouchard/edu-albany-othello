@@ -5,8 +5,6 @@ import java.util.Map;
 
 import edu.albany.othello.bots.Bot;
 import edu.albany.othello.bots.RandomBot;
-import edu.albany.othello.event.GameOverEvent;
-import edu.albany.othello.event.GameOverListener;
 
 public class OthelloApplication {
     public static OthelloModel model;
