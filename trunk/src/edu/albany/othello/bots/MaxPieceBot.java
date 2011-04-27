@@ -15,8 +15,7 @@ public class MaxPieceBot extends Bot {
 	}
 
 	// confidence for a BoardState will be gameDuration * (#pieces owned by
-	// player/#pieces owned)
-	// by all players
+	// player/#pieces owned by all players)
 	// gameDuration = #turn/60
 	// confidence for a move will be the average confidence for a BoardState
 	@Override
