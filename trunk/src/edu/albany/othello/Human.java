@@ -8,7 +8,6 @@ public class Human extends Player {
     
     @Override
     public void thinkOfMove() {
-        System.out.println("Waiting for move...");
         OthelloApplication.view.setCurrentHuman(this);
     }
     
