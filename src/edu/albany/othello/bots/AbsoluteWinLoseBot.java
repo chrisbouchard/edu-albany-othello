@@ -9,11 +9,14 @@ import edu.albany.othello.Move;
 import edu.albany.othello.Piece;
 
 public class AbsoluteWinLoseBot extends Bot {
-	public AbsoluteWinLoseBot(Piece p) {
-		super(p);
-	}
+    private boolean hasGloated;
+    
+    public AbsoluteWinLoseBot(Piece p) {
+        super(p);
+        hasGloated = false;
+    }
 
-	@Override
+    @Override
     public Map<Move, Double> getMoveConfidences(BoardState bs,
             Map<Piece, Map<Move, Set<BoardState>>> deepestBoardStates) {
         Map<Move, Double> moveConfidences = new HashMap<Move, Double>();
@@ -38,10 +41,11 @@ public class AbsoluteWinLoseBot extends Bot {
 
             moveConfidences.put(m, (isWin ? 1.0 : 0.0) + (isLose ? -1.0 : 0.0));
 
-            /*
-             * if (isWin)
-             * System.out.println("You have no chance to survive make your time.");
-             */
+            if (isWin && !hasGloated) {
+                System.err.println("You have no chance to survive! "
+                        + "Make your time.");
+                hasGloated = true;
+            }
         }
         return moveConfidences;
     }
