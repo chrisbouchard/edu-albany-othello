@@ -14,31 +14,35 @@ public class AbsoluteWinLoseBot extends Bot {
 	}
 
 	@Override
-	public Map<Move, Double> getMoveConfidences(BoardState bs,
-			Map<Piece, Map<Move, Set<BoardState>>> deepestBoardStates) {
-		Map<Move, Double> moveConfidences = new HashMap<Move, Double>();
+    public Map<Move, Double> getMoveConfidences(BoardState bs,
+            Map<Piece, Map<Move, Set<BoardState>>> deepestBoardStates) {
+        Map<Move, Double> moveConfidences = new HashMap<Move, Double>();
 
-		for (Move m : deepestBoardStates.get(this.piece).keySet()) {
+        Map<Move, Set<BoardState>> allDeepestBoardStates = deepestBoardStates
+                .get(Piece.WHITE);
+        allDeepestBoardStates.putAll(deepestBoardStates.get(Piece.BLACK));
 
-			// get the deep BoardStates for this move
-			Set<BoardState> deepestBoardStatesSet = deepestBoardStates.get(
-					this.piece).get(m);
+        for (Move m : allDeepestBoardStates.keySet()) {
 
-			boolean isWin = true;
-			boolean isLose = true;
+            // get the deep BoardStates for this move
+            Set<BoardState> deepestBoardStatesSet = allDeepestBoardStates
+                    .get(m);
 
-			for (BoardState deepBS : deepestBoardStatesSet) {
-				isWin &= deepBS.getWinningPiece() == this.piece;
-				isLose &= deepBS.getWinningPiece() == this.piece.getAlternate();
-			}
+            boolean isWin = true;
+            boolean isLose = true;
 
-			moveConfidences.put(m, (isWin ? 1.0 : 0.0) + (isLose ? -1.0 : 0.0));
+            for (BoardState deepBS : deepestBoardStatesSet) {
+                isWin &= deepBS.getWinningPiece() == this.piece;
+                isLose &= deepBS.getWinningPiece() == this.piece.getAlternate();
+            }
 
-			/*
-			 * if (isWin)
-			 * System.out.println("You have no chance to survive make your time.");
-			 */
-		}
-		return moveConfidences;
-	}
+            moveConfidences.put(m, (isWin ? 1.0 : 0.0) + (isLose ? -1.0 : 0.0));
+
+            /*
+             * if (isWin)
+             * System.out.println("You have no chance to survive make your time.");
+             */
+        }
+        return moveConfidences;
+    }
 }

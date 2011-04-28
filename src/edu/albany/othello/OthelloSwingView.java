@@ -40,7 +40,7 @@ public class OthelloSwingView implements OthelloView {
     }
 
     private JFrame frame;
-    private JButton[][] buttons;
+    private PieceButton[][] buttons;
     private JLabel messageLabel;
     private Human currentHuman;
 
@@ -60,17 +60,17 @@ public class OthelloSwingView implements OthelloView {
         messageLabel = new JLabel(" ");
         frame.add(messageLabel, BorderLayout.SOUTH);
 
-        buttons = new JButton[BoardState.ROWS][BoardState.COLS];
+        buttons = new PieceButton[BoardState.ROWS][BoardState.COLS];
 
         for (int r = 0; r < BoardState.ROWS; ++r) {
             for (int c = 0; c < BoardState.COLS; ++c) {
-                buttons[r][c] = new JButton();
+                buttons[r][c] = new PieceButton(null);
                 buttonPanel.add(buttons[r][c]);
                 buttons[r][c].addActionListener(new ButtonActionListener(r, c));
             }
         }
 
-        frame.pack();
+        frame.setSize(500, 500);
         frame.setVisible(true);
     }
     
@@ -83,28 +83,13 @@ public class OthelloSwingView implements OthelloView {
     }
 
     public void update() {
+        System.out.println("update!");
         BoardState bs = OthelloApplication.model.getCurrentBoardState();
 
         for (int r = 0; r < BoardState.ROWS; ++r) {
             for (int c = 0; c < BoardState.COLS; ++c) {
-                if (bs.getPieceAt(r, c) == null) {
-                    buttons[r][c].setText(" ");
-                }
-                else {
-                    switch (bs.getPieceAt(r, c)) {
-                    case WHITE:
-                        buttons[r][c].setText("W");
-                        break;
-
-                    case BLACK:
-                        buttons[r][c].setText("B");
-                        break;
-
-                    default:
-                        buttons[r][c].setText(" ");
-                        break;
-                    }
-                }
+                buttons[r][c].setPiece(bs.getPieceAt(r, c));
+                buttons[r][c].repaint();
             }
         }
 
@@ -121,5 +106,9 @@ public class OthelloSwingView implements OthelloView {
                 : "";
 
         messageLabel.setText(message);
+        
+        if (bs.isGameOver()) {
+            displayMessage(bs.getWinningPiece() + " Wins!");
+        }
     }
 }
