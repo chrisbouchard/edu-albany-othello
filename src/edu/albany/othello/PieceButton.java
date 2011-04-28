@@ -33,7 +33,7 @@ public class PieceButton extends JButton {
     }
 
     @Override
-    protected void paintComponent(Graphics g) {
+    public void paint(Graphics g) {
         int diameter = Math.min(getWidth(), getHeight());
         Graphics2D g2 = (Graphics2D) g.create();
         
