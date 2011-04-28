@@ -13,7 +13,7 @@ import edu.albany.othello.bots.*;
 public class AIBrain extends Player {
 	// holds the bot and weight pair
 	private Map<Bot, Double> botList;
-	private static final int maxDepth = 3;
+	private static final int maxDepth = 1;
 
 	public Move getBestMove() {
 		Set<Map<Move, Double>> moveConfidenceSet = new HashSet<Map<Move, Double>>();
@@ -79,7 +79,7 @@ public class AIBrain extends Player {
 		// TODO fill in botList
 		super(p);
 		botList = new HashMap<Bot, Double>();
-		botList.put(new RandomBot(p), 2.0);
+		botList.put(new RandomBot(p), 0.0);
 		botList.put(new MobilityBot(p), 10.0);
 		botList.put(new AntiMobilityBot(p), 10.0);
 		botList.put(new MaxPieceBot(p), 10.0);
