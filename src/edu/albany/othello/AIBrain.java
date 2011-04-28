@@ -14,6 +14,8 @@ public class AIBrain extends Player {
 	// holds the bot and weight pair
 	private Map<Bot, Double> botList;
 	private static final int maxDepth = 1;
+	
+	private boolean beQuiet;
 
 	public Move getBestMove() {
 		Set<Map<Move, Double>> moveConfidenceSet = new HashSet<Map<Move, Double>>();
@@ -59,6 +61,10 @@ public class AIBrain extends Player {
 		}
 		// by this point moveWeightedConfidenceSums should contain each move
 		// once with the weighted sum
+		
+		if (!beQuiet) {
+		    System.out.println(moveWeightedConfidenceSums);
+		}
 
 		// computes the best move given all moves and their total
 		// holds the highest (move, total) pair
@@ -70,14 +76,20 @@ public class AIBrain extends Player {
 				currentHighestPair = entry;
 			}
 		}
+		
+		if (!beQuiet) {
+		    System.out.println("AI Choses: " + currentHighestPair);
+		}
+		
 		return currentHighestPair.getKey();
 	}
 
 	// Creates an AIBrain that uses all bots at predetermined weights
-	public AIBrain(Piece p) {
+	public AIBrain(Piece p, boolean beQuiet) {
 		// TODO Auto-generated constructor stub
 		// TODO fill in botList
 		super(p);
+		this.beQuiet = beQuiet;
 		botList = new HashMap<Bot, Double>();
 		botList.put(new RandomBot(p), 0.0);
 		botList.put(new MobilityBot(p), 10.0);
@@ -88,8 +100,9 @@ public class AIBrain extends Player {
 	}
 
 	// Creates an AIBrain that uses the given bots with their given weights
-	public AIBrain(Piece p, Map<Bot, Double> botWeight) {
+	public AIBrain(Piece p, boolean beQuiet, Map<Bot, Double> botWeight) {
 		super(p);
+		this.beQuiet = beQuiet;
 		botList = new HashMap<Bot, Double>(botWeight);
 	}
 

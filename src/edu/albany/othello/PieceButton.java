@@ -1,8 +1,10 @@
 package edu.albany.othello;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 
 import javax.swing.JButton;
 
@@ -12,6 +14,8 @@ public class PieceButton extends JButton {
      * 
      */
     private static final long serialVersionUID = -3573867997835593775L;
+
+    private static final int STROKE_WIDTH = 2;
 
     private Piece p;
 
@@ -30,13 +34,18 @@ public class PieceButton extends JButton {
 
     @Override
     protected void paintComponent(Graphics g) {
+        int diameter = Math.min(getWidth(), getHeight());
         Graphics2D g2 = (Graphics2D) g.create();
         
-        if (p == null) {
-            g2.setColor(Color.GRAY);
-            g2.drawOval(2, 2, getWidth() - 2, getHeight() - 2);
-        }
-        else {
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                RenderingHints.VALUE_ANTIALIAS_ON);
+        
+        g2.setColor(Color.BLACK);
+        g2.drawRect(0, 0, getWidth(), getHeight());
+        
+        g2.setStroke(new BasicStroke(STROKE_WIDTH));
+
+        if (p != null) {
             switch (p) {
             case BLACK:
                 g2.setColor(Color.BLACK);
@@ -46,11 +55,16 @@ public class PieceButton extends JButton {
                 g2.setColor(Color.WHITE);
                 break;
             }
+
             
-            g2.fillOval(0, 0, getWidth(), getHeight());
+            g2.fillOval(STROKE_WIDTH, STROKE_WIDTH,
+                    diameter - 2 * STROKE_WIDTH, diameter - 2 * STROKE_WIDTH);
+
+            g2.setColor(Color.BLACK);
+            g2.drawOval(STROKE_WIDTH, STROKE_WIDTH,
+                    diameter - 2 * STROKE_WIDTH, diameter - 2 * STROKE_WIDTH);
         }
-        
-        
+
     }
 
 }
