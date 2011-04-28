@@ -13,7 +13,7 @@ import edu.albany.othello.bots.*;
 public class AIBrain extends Player {
 	// holds the bot and weight pair
 	private Map<Bot, Double> botList;
-	private static final int maxDepth = 1;
+	private static final int maxDepth = 4;
 	
 	private boolean beQuiet;
 
