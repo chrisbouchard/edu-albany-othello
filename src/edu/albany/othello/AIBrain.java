@@ -133,7 +133,7 @@ public class AIBrain extends Player {
 	// TODO make this function NOT RECURSIVE - it uses too much memory
 	// return the set of deepest BoardStates for each Piece that are no more
 	// than depth levels deep
-	// turn says whos turn it is to move on the BoardState bs
+	// turn says whose turn it is to move on the BoardState bs
 	private Map<Piece, Set<BoardState>> getChildBoardStateTree(BoardState bs,
 			Piece turn, int depth) {
 		Map<Piece, Set<BoardState>> ans = new HashMap<Piece, Set<BoardState>>();
