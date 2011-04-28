@@ -83,7 +83,6 @@ public class OthelloSwingView implements OthelloView {
     }
 
     public void update() {
-        System.out.println("update!");
         BoardState bs = OthelloApplication.model.getCurrentBoardState();
 
         for (int r = 0; r < BoardState.ROWS; ++r) {
