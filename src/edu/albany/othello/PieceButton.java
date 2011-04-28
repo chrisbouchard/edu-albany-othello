@@ -40,7 +40,7 @@ public class PieceButton extends JButton {
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
         
-        g2.setColor(Color.BLACK);
+        g2.setColor(new Color(0f, 0f, 0f, 0.5f));
         g2.drawRect(0, 0, getWidth(), getHeight());
         
         g2.setStroke(new BasicStroke(STROKE_WIDTH));
