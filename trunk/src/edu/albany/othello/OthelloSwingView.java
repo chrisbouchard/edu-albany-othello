@@ -1,6 +1,7 @@
 package edu.albany.othello;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
@@ -56,6 +57,7 @@ public class OthelloSwingView implements OthelloView {
                 BoardState.COLS);
         buttonPanel.setLayout(buttonLayout);
         frame.add(buttonPanel, BorderLayout.CENTER);
+        buttonPanel.setBackground(new Color(0f, 0.7f, 0.3f));
 
         messageLabel = new JLabel(" ");
         frame.add(messageLabel, BorderLayout.SOUTH);
