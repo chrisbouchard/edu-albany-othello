@@ -29,7 +29,7 @@ public class OthelloSwingView implements OthelloView {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            System.out.println(String.format("(%d, %d)", r, c));
+            //System.out.println(String.format("(%d, %d)", r, c));
 
             if (currentHuman != null) {
                 Human h = currentHuman;

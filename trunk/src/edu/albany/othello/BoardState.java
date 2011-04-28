@@ -67,11 +67,7 @@ public class BoardState {
     // Private because new boards should be created using getBoardFromMove()
     private BoardState(BoardState parent, Move m) {
         // Check that the new move is in bounds and is legal
-        if (!isInBounds(m.getR(), m.getC())) {
-            throw new IndexOutOfBoundsException();
-        }
-
-        if (parent.board[m.getR()][m.getC()] != null) {
+        if (!parent.getValidMoves(m.getPiece()).contains(m)) {
             throw new IllegalArgumentException();
         }
 
@@ -89,20 +85,14 @@ public class BoardState {
 
     public BoardState getBoardFromMove(Move m) {
         /*
-        if (!getValidMoves(m.getPiece()).contains(m)) {
-            throw new IllegalArgumentException();
-        }
+         * BoardState bs = childBoards.get(m);
+         * if (bs == null) {
+         * bs = new BoardState(this, m);
+         * childBoards.put(m, bs);
+         * }
+         * return bs;
+         */
 
-        BoardState bs = childBoards.get(m);
-
-        if (bs == null) {
-            bs = new BoardState(this, m);
-            childBoards.put(m, bs);
-        }
-
-        return bs;
-        */
-        
         return new BoardState(this, m);
     }
 
@@ -174,7 +164,7 @@ public class BoardState {
                 }
             }
         }
-        
+
         return null;
     }
 
