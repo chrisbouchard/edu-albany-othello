@@ -14,7 +14,7 @@ public class OthelloApplication {
     public static void main(String[] args) {
         Map<Piece, Player> players = new HashMap<Piece, Player>();
 
-        if (args[0].equals("demo")) {
+        if (args.length > 0 && args[0].equals("demo")) {
             players.put(Piece.BLACK, new Human(Piece.BLACK));
             players.put(Piece.WHITE, new AIBrain(Piece.WHITE));
 
