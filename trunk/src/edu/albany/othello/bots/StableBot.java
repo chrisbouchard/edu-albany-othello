@@ -38,7 +38,7 @@ public class StableBot extends Bot {
 			// for each deep BoardState
 			for (BoardState deepBS : deepestBoardStatesSet) {
 				// find the number of stable pieces
-				Set<Move> stablePieces = getStablePieces(deepBS, stablePieceSet);
+				Set<Move> stablePieces = getStablePieces(deepBS, new HashSet<Move>());
 				int numStablePieces = stablePieces.size();
 				if (stablePieces.size() != 0)
 					System.out
@@ -54,7 +54,7 @@ public class StableBot extends Bot {
 			System.out
 					.println("The current BoardState has these stable pieces for the AI: "
 							+ stablePiecesBS);
-			avgConfidence = (stablePiecesBS.size() - avgStablePieces) / 64;
+			avgConfidence = (avgStablePieces - stablePiecesBS.size()) / 64;
 
 			moveConfidences.put(m, avgConfidence);
 		}
