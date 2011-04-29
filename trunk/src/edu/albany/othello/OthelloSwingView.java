@@ -113,12 +113,15 @@ public class OthelloSwingView implements OthelloView {
         messageLabel.setText(message);
 
         if (bs.isGameOver()) {
-            if (bs.getWinningPiece() == null ){
-            	displayMessage("Tie Game!");
-            } else {
-            	displayMessage(bs.getWinningPiece() + " Wins!");
+            if (bs.getWinningPiece() == null) {
+                displayMessage("A STRANGE GAME.\n"
+                        + "THE ONLY WINNING MOVE IS NOT TO PLAY.\n"
+                        + "HOW ABOUT A NICE GAME OF CHESS?");
             }
-            
+            else {
+                displayMessage(bs.getWinningPiece() + " WINS!");
+            }
+
         }
     }
 }
