@@ -18,9 +18,11 @@ public class PieceButton extends JButton {
     private static final int STROKE_WIDTH = 2;
 
     private Piece p;
+    private boolean selected;
 
     public PieceButton(Piece p) {
         this.p = p;
+        selected = false;
         setSize(50, 50);
     }
 
@@ -44,6 +46,12 @@ public class PieceButton extends JButton {
         g2.drawRect(0, 0, getWidth(), getHeight());
         
         g2.setStroke(new BasicStroke(STROKE_WIDTH));
+        
+        if (selected) {
+            g2.setColor(new Color(0f, 1f, 0.5f, 0.8f));
+            g2.fillOval(STROKE_WIDTH, STROKE_WIDTH,
+                    diameter - 2 * STROKE_WIDTH, diameter - 2 * STROKE_WIDTH);
+        }
 
         if (p != null) {
             switch (p) {
@@ -65,6 +73,14 @@ public class PieceButton extends JButton {
                     diameter - 2 * STROKE_WIDTH, diameter - 2 * STROKE_WIDTH);
         }
 
+    }
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
     }
 
 }

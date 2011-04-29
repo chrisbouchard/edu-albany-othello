@@ -6,6 +6,7 @@ import java.awt.GridLayout;
 import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Set;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -30,7 +31,7 @@ public class OthelloSwingView implements OthelloView {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            //System.out.println(String.format("(%d, %d)", r, c));
+            // System.out.println(String.format("(%d, %d)", r, c));
 
             if (currentHuman != null) {
                 Human h = currentHuman;
@@ -75,7 +76,7 @@ public class OthelloSwingView implements OthelloView {
         frame.setSize(500, 500);
         frame.setVisible(true);
     }
-    
+
     public void displayMessage(String msg) {
         JOptionPane.showMessageDialog(frame, msg);
     }
@@ -86,10 +87,20 @@ public class OthelloSwingView implements OthelloView {
 
     public void update() {
         BoardState bs = OthelloApplication.model.getCurrentBoardState();
+        Piece cp = OthelloApplication.model.getCurrentPiece();
+        Set<Move> validMoves = bs.getValidMoves(cp);
 
         for (int r = 0; r < BoardState.ROWS; ++r) {
             for (int c = 0; c < BoardState.COLS; ++c) {
                 buttons[r][c].setPiece(bs.getPieceAt(r, c));
+
+                if (validMoves.contains(new Move(cp, r, c))) {
+                    buttons[r][c].setSelected(true);
+                }
+                else {
+                    buttons[r][c].setSelected(false);
+                }
+
                 buttons[r][c].repaint();
             }
         }
@@ -98,16 +109,13 @@ public class OthelloSwingView implements OthelloView {
 
         for (Piece p : Piece.values()) {
             message += String.format("[%c] %s: %d    ",
-                    ((p == OthelloApplication.model.getCurrentPiece()) ? '*'
-                            : ' '), p, OthelloApplication.model
-                            .getCurrentBoardState().getNumPieces(p));
+                    ((p == cp) ? '*' : ' '), p, bs.getNumPieces(p));
         }
 
-        message += OthelloApplication.model.getCurrentBoardState().isGameOver() ? "GAME OVER!"
-                : "";
+        message += bs.isGameOver() ? "GAME OVER!" : "";
 
         messageLabel.setText(message);
-        
+
         if (bs.isGameOver()) {
             displayMessage(bs.getWinningPiece() + " Wins!");
         }
