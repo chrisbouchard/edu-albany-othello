@@ -39,20 +39,17 @@ public class WinLossBot extends Bot {
 					.get(m);
 
 			int winCount = 0;
-			int lossCount = 0;
-			int numBS = 0;
 
 			for (BoardState deepBS : deepestBoardStatesSet) {
 				if (deepBS.getWinningPiece() == this.piece)
 					winCount++;
 				if (deepBS.getWinningPiece() == this.piece.getAlternate())
-					lossCount++;
-				numBS++;
+					winCount--;
 			}
-			if (numBS == 0) {
+			if (deepestBoardStates.size() == 0) {
 				moveConfidences.put(m, 0.0);
 			} else {
-				moveConfidences.put(m, (double) (winCount - lossCount) / numBS);
+				moveConfidences.put(m, (double)(winCount / deepestBoardStates.size()));
 			}
 		}
 		return moveConfidences;
