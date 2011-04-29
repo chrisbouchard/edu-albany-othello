@@ -17,7 +17,7 @@ public class OthelloApplication {
         if (args.length > 0 && args[0].equals("demo")) {
             players.put(Piece.BLACK, new Human(Piece.BLACK));
             //players.put(Piece.BLACK, new AIBrain(Piece.BLACK, false));
-            players.put(Piece.WHITE, new AIBrain(Piece.WHITE, false));
+            players.put(Piece.WHITE, new AIBrain(Piece.WHITE, 1500, false));
 
             model = new OthelloModel();
             view = new OthelloSwingView();
@@ -31,9 +31,9 @@ public class OthelloApplication {
             Map<Bot, Double> randomBot = new HashMap<Bot, Double>();
             randomBot.put(new RandomBot(Piece.BLACK), Double.MAX_VALUE);
 
-            players.put(Piece.BLACK, new AIBrain(Piece.BLACK, true, randomBot));
+            players.put(Piece.BLACK, new AIBrain(Piece.BLACK, 150, true, randomBot));
             // players.put(Piece.WHITE, new Human(Piece.WHITE));
-            players.put(Piece.WHITE, new AIBrain(Piece.WHITE, true));
+            players.put(Piece.WHITE, new AIBrain(Piece.WHITE, 150, true));
             
 
             model = new OthelloModel();
