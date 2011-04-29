@@ -24,7 +24,7 @@ public class MaxPieceBot extends Bot {
             Map<Piece, Map<Move, Set<BoardState>>> deepestBoardStates) {
 
         Map<Move, Double> moveConfidences = new HashMap<Move, Double>();
-        double gameDuration = (bs.getNumPieces(this.piece)
+        double gameDuration = (double) (bs.getNumPieces(this.piece)
                 + bs.getNumPieces(this.piece.getAlternate()) - 30) / 60;
 
         for (Move m : deepestBoardStates.get(this.piece).keySet()) {
