@@ -103,7 +103,7 @@ public class AIBrain extends Player {
         botList.put(new AntiMobilityBot(p), 6.0);
         botList.put(new MaxPieceBot(p), 6.0);
         botList.put(new ParityBot(p), 9.0);
-        botList.put(new WinLossBot(p),10.0);
+        botList.put(new WinLossBot(p), 10.0);
         botList.put(new AbsoluteWinLoseBot(p), Double.MAX_VALUE);
     }
 
@@ -205,10 +205,148 @@ public class AIBrain extends Player {
         return ans;
     }
 
+    public Map<Piece, Map<Move, Set<BoardState>>> getDeepestBoardStates2(
+            int maxElements, BoardState currentBS, Piece currentPiece) {
+
+        // An element in the set for the current level
+        class Element {
+            public BoardState bs;
+            public Piece p;
+            public Element parent;
+            public Move rootMove;
+
+            public Element(BoardState bs, Piece p, Element parent, Move rootMove) {
+                this.bs = bs;
+                this.p = p;
+                this.parent = parent;
+                this.rootMove = rootMove;
+            }
+
+            public boolean equals(Object o) {
+                if (!(o instanceof Element)) {
+                    return false;
+                }
+
+                Element e = (Element) o;
+                return e.bs.equals(bs) && e.p == p && e.parent == parent
+                        && e.rootMove.equals(rootMove);
+            }
+
+            public int hashCode() {
+                int hash = 7;
+
+                hash = hash * 31 + bs.hashCode();
+                hash = hash * 31 + p.hashCode();
+                hash = hash * 31
+                        + ((rootMove == null) ? 0 : rootMove.hashCode());
+
+                return hash;
+            }
+
+            public String toString() {
+                return String.format("[%s %d]", p, bs.hashCode());
+            }
+        }
+
+        // Method logic starts here
+
+        Map<Piece, Map<Move, Set<BoardState>>> ans = new HashMap<Piece, Map<Move, Set<BoardState>>>();
+
+        // BoardState currentBS =
+        // OthelloApplication.model.getCurrentBoardState();
+        // Piece currentPiece = OthelloApplication.model.getCurrentPiece();
+
+        for (Piece p : Piece.values()) {
+            Map<Move, Set<BoardState>> pieceAns = new HashMap<Move, Set<BoardState>>();
+            Set<Element> currentLevel = new HashSet<Element>();
+            Set<Element> newElements = new HashSet<Element>();
+
+            Element rootElt = new Element(currentBS, currentPiece, null, null);
+            currentLevel.add(rootElt);
+            newElements.add(rootElt);
+
+            int availableElements = maxElements - 1;
+
+            while (!newElements.isEmpty()) {
+                Set<Element> prevNewElements = newElements;
+                newElements = new HashSet<Element>();
+
+                for (Element newElt : prevNewElements) {
+                    Piece nextP = newElt.p.getAlternate();
+                    Set<Move> validMoves = newElt.bs.getValidMoves(nextP);
+
+                    // Handle skips
+                    if (validMoves.isEmpty()) {
+                        nextP = newElt.p.getAlternate();
+                        validMoves = newElt.bs.getValidMoves(nextP);
+                    }
+
+                    for (Move vm : validMoves) {
+                        // Add the new elements if there's room
+                        if (availableElements > 0) {
+                            Move rootMove = (newElt.rootMove == null) ? vm
+                                    : newElt.rootMove;
+                            Element newE = new Element(
+                                    newElt.bs.getBoardFromMove(vm), nextP,
+                                    newElt, rootMove);
+                            currentLevel.add(newE);
+                            newElements.add(newE);
+                            --availableElements;
+
+                            // Create a set for this move
+                            if (newElt.rootMove == null) {
+                                pieceAns.put(vm, new HashSet<BoardState>());
+                            }
+
+                            // If this is the color we're looking for, remove
+                            // its ancestors
+                            if (newE.p == p) {
+                                while (newE.parent != null) {
+                                    Element parent = newE.parent;
+                                    newE.parent = newE.parent.parent;
+                                    currentLevel.remove(parent);
+                                    ++availableElements;
+                                }
+                            }
+                        }
+
+                        // Find elements whose parent was removed and set
+                        // their parent to null
+                        for (Element elt : currentLevel) {
+                            if (elt.parent != null
+                                    && !currentLevel.contains(elt.parent)) {
+                                elt.parent = null;
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Filter out the board states that don't match the color we
+            // want and add to the proper key
+            for (Element e : currentLevel) {
+                if (e.p == p && e.rootMove != null) {
+                    pieceAns.get(e.rootMove).add(e.bs);
+                }
+            }
+
+            ans.put(p, pieceAns);
+        }
+
+        return ans;
+    }
+
     @Override
     public void thinkOfMove() {
         Move m = getBestMove();
         OthelloApplication.controller.makeMove(m);
+    }
+
+    // For testing
+    public static void main(String... args) {
+        BoardState bs = new BoardState();
+        AIBrain aib = new AIBrain(Piece.BLACK, true);
+        System.out.println(aib.getDeepestBoardStates2(10, bs, Piece.WHITE));
     }
 
 }
