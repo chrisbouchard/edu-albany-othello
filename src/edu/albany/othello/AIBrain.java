@@ -289,16 +289,17 @@ public class AIBrain extends Player {
             Set<Element> currentLevel = new HashSet<Element>();
             Set<Element> newElements = new HashSet<Element>();
 
-            // Add the root to the current level
-            // Root has no parent, and no move was made to get it
-            // Assume the current board is the previous color just to get things
-            // started
-            Element rootElt = new Element(currentBS,
-                    currentPiece.getAlternate(), null, null);
-            currentLevel.add(rootElt);
-            newElements.add(rootElt);
-
-            int availableElements = maxElements - 1;
+            // Add root's children to the current level
+            // Root's children have no parent
+            for (Move m : currentBS.getValidMoves(currentPiece)) {
+                Element rootChildElt = new Element(currentBS.getBoardFromMove(m),
+                        currentPiece, null, m);
+                currentLevel.add(rootChildElt);
+                newElements.add(rootChildElt);
+                pieceAns.put(m, new HashSet<BoardState>());
+            }
+            
+            int availableElements = maxElements - currentLevel.size();
 
             while (!newElements.isEmpty()) {
                 Set<Element> prevNewElements = newElements;
@@ -317,22 +318,15 @@ public class AIBrain extends Player {
                     for (Move vm : validMoves) {
                         // Add the new elements if there's room
                         if (availableElements > 0) {
-                            Move rootMove = (newElt.rootMove == null) ? vm
-                                    : newElt.rootMove;
                             Element newE = new Element(
                                     newElt.bs.getBoardFromMove(vm), nextP,
-                                    newElt, rootMove);
+                                    newElt, newElt.rootMove);
                             
                             // Try to add the element
                             if (currentLevel.add(newE)) {
                                 // Ok, it must be new
                                 newElements.add(newE);
                                 --availableElements;
-
-                                // Create a set for this move
-                                if (newElt.rootMove == null) {
-                                    pieceAns.put(vm, new HashSet<BoardState>());
-                                }
 
                                 // If this is the color we're looking for,
                                 // remove
