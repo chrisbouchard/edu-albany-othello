@@ -308,18 +308,30 @@ public class AIBrain extends Player {
                                     ++availableElements;
                                 }
                             }
-                        }
+                            // Otherwise remove all but its most remote
+                            // ancestor
+                            else {
+                                while (newE.parent != null
+                                        && newE.parent.parent != null) {
+                                    Element parent = newE.parent;
+                                    newE.parent = newE.parent.parent;
+                                    currentLevel.remove(parent);
+                                    ++availableElements;
+                                }
+                            }
 
-                        // Find elements whose parent was removed and set
-                        // their parent to null
-                        for (Element elt : currentLevel) {
-                            if (elt.parent != null
-                                    && !currentLevel.contains(elt.parent)) {
-                                elt.parent = null;
+                            // Find elements whose parent was removed and set
+                            // their parent to null
+                            for (Element elt : currentLevel) {
+                                if (elt.parent != null
+                                        && !currentLevel.contains(elt.parent)) {
+                                    elt.parent = null;
+                                }
                             }
                         }
                     }
                 }
+
             }
 
             // Filter out the board states that don't match the color we
