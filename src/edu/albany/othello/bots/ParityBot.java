@@ -34,7 +34,7 @@ public class ParityBot extends Bot {
 
 			// number of empty pieces
 			Set<Move> region = numPiecesInRegion(bs, m, new HashSet<Move>());
-			int numEmptyPieces = region.size() + 1;
+			int numEmptyPieces = region.size();
 
 			// favor is -1 if even, 1 if odd
 			int favor = (numEmptyPieces % 2 == 0) ? -1 : 1;
@@ -53,9 +53,9 @@ public class ParityBot extends Bot {
 
 		for (int r = move.getR() - 1; r <= move.getR() + 1; r++) {
 			for (int c = move.getC() - 1; c <= move.getC() + 1; c++) {
-				if (r != c) {
+				//if (r != c) {
 					surroundingPositions.add(new Move(null, r, c));
-				}
+				//}
 			}
 		}
 
