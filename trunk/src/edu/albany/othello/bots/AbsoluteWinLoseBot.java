@@ -42,8 +42,8 @@ public class AbsoluteWinLoseBot extends Bot {
             moveConfidences.put(m, (isWin ? 1.0 : 0.0) + (isLose ? -1.0 : 0.0));
 
             if (isWin && !hasGloated) {
-                System.err.println("You have no chance to survive! "
-                        + "Make your time.");
+                System.err.println("You have no chance to survive "
+                        + "make your time.");
                 hasGloated = true;
             }
         }
