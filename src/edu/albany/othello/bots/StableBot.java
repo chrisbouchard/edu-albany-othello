@@ -24,15 +24,6 @@ public class StableBot extends Bot {
 
 		// stablePieceSet holds the stable pieces for bs
 		Set<Move> stablePieceSet = new HashSet<Move>();
-		// set of 4 spots initially for each of the 4 corners
-		if (bs.getPieceAt(0, 0) == this.piece)
-			stablePieceSet.add(new Move(this.piece, 0, 0));
-		if (bs.getPieceAt(0, 7) == this.piece)
-			stablePieceSet.add(new Move(this.piece, 0, 7));
-		if (bs.getPieceAt(7, 0) == this.piece)
-			stablePieceSet.add(new Move(this.piece, 7, 0));
-		if (bs.getPieceAt(7, 7) == this.piece)
-			stablePieceSet.add(new Move(this.piece, 7, 7));
 
 		// for each move
 		for (Move m : deepestBoardStates.get(this.piece).keySet()) {
@@ -43,16 +34,22 @@ public class StableBot extends Bot {
 			System.out.println("For move: " + m + "There are "
 					+ deepestBoardStatesSet.size() + " BoardStates.");
 			double avgConfidence = 0;
-			int avgStablePieces = 0;
+			double avgStablePieces = 0;
 			// for each deep BoardState
 			for (BoardState deepBS : deepestBoardStatesSet) {
 				// find the number of stable pieces
 				Set<Move> stablePieces = getStablePieces(deepBS, stablePieceSet);
 				int numStablePieces = stablePieces.size();
+				if (stablePieces.size() != 0)
+					System.out
+							.println("The future BoardState has these stable pieces for the AI: "
+									+ stablePieces);
 
 				avgStablePieces += numStablePieces;
+				System.out.println(avgStablePieces);
 			}
 			avgStablePieces /= deepestBoardStatesSet.size();
+			System.out.println(avgStablePieces);
 			Set<Move> stablePiecesBS = getStablePieces(bs, stablePieceSet);
 			System.out
 					.println("The current BoardState has these stable pieces for the AI: "
@@ -70,7 +67,7 @@ public class StableBot extends Bot {
 		// add adjacent pieces that are of the same color to the candidate set
 		for (int r = move.getR() - 1; r <= move.getR() + 1; r++) {
 			for (int c = move.getC() - 1; c <= move.getC() + 1; c++) {
-				if (bs.getPieceAt(r, c) == piece) {
+				if (BoardState.isInBounds(r, c) && bs.getPieceAt(r, c) == piece) {
 					adjacentPieces.add(new Move(piece, r, c));
 				}
 			}
@@ -99,24 +96,41 @@ public class StableBot extends Bot {
 		// piece. they may be a stable piece
 		Set<Move> candidateSet = new HashSet<Move>();
 
+		// set of 4 spots initially for each of the 4 corners
+		if (bs.getPieceAt(0, 0) == this.piece)
+			stablePieceSet.add(new Move(this.piece, 0, 0));
+		if (bs.getPieceAt(0, 7) == this.piece)
+			stablePieceSet.add(new Move(this.piece, 0, 7));
+		if (bs.getPieceAt(7, 0) == this.piece)
+			stablePieceSet.add(new Move(this.piece, 7, 0));
+		if (bs.getPieceAt(7, 7) == this.piece)
+			stablePieceSet.add(new Move(this.piece, 7, 7));
+
+		
+
 		// for each stable piece
 		for (Move m : stablePieceSet) {
 			// get the valid adjacent pieces
 			Set<Move> validAdjacentPieces = getValidAdjacentPieces(bs, m,
 					this.piece);
+			System.out.println("the boardstate here is:\n" + bs);
+			System.out.println("valid adj pieces: " + validAdjacentPieces);
 			candidateSet.addAll(validAdjacentPieces);
 		}
-
+		System.out.println("here1");
 		// for each candidate, find the new candidates and add them to the
 		// candidate list
 		Set<Move> newCandidateSet = candidateSet;
 		Set<Move> oldCandidateSet = null;
 		do {
+			System.out.println("here2");
 			oldCandidateSet = newCandidateSet;
 			newCandidateSet = new HashSet<Move>();
 			for (Move m : oldCandidateSet) {
-				if (isStable(m, stablePieceSet)) {
-					stablePieceSet.add(m);
+				System.out.println("here3");
+				// if the piece is stable and it has not been added already
+				if (isStable(m, stablePieceSet) && stablePieceSet.add(m)) {
+					System.out.println("here4");
 					newCandidateSet.addAll(getValidAdjacentPieces(bs, m,
 							this.piece));
 				}
