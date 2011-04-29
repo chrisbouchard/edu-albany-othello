@@ -10,42 +10,47 @@ import edu.albany.othello.Piece;
 
 public class MaxPieceBot extends Bot {
 
-	public MaxPieceBot(Piece p) {
-		super(p);
-	}
+    public MaxPieceBot(Piece p) {
+        super(p);
+    }
 
-	// confidence for a BoardState will be gameDuration * (#pieces owned by
-	// player/#pieces owned by all players)
-	// old way: gameDuration = #turn/60
-	//new way: gameDuration = (#turn - 30)/60
-	// confidence for a move will be the average confidence for a BoardState
-	@Override
-	public Map<Move, Double> getMoveConfidences(BoardState bs,
-			Map<Piece, Map<Move, Set<BoardState>>> deepestBoardStates) {
+    // confidence for a BoardState will be gameDuration * (#pieces owned by
+    // player/#pieces owned by all players)
+    // old way: gameDuration = #turn/60
+    // new way: gameDuration = (#turn - 30)/60
+    // confidence for a move will be the average confidence for a BoardState
+    @Override
+    public Map<Move, Double> getMoveConfidences(BoardState bs,
+            Map<Piece, Map<Move, Set<BoardState>>> deepestBoardStates) {
 
-		Map<Move, Double> moveConfidences = new HashMap<Move, Double>();
-		double gameDuration = (bs.getNumPieces(this.piece) + bs
-				.getNumPieces(this.piece.getAlternate()) - 30) / 60;
+        Map<Move, Double> moveConfidences = new HashMap<Move, Double>();
+        double gameDuration = (bs.getNumPieces(this.piece)
+                + bs.getNumPieces(this.piece.getAlternate()) - 30) / 60;
 
-		for (Move m : deepestBoardStates.get(this.piece).keySet()) {
+        for (Move m : deepestBoardStates.get(this.piece).keySet()) {
 
-			// get the deep BoardStates for this move
-			Set<BoardState> deepestBoardStatesSet = deepestBoardStates.get(
-					this.piece).get(m);
- 
-			double avgConfidence = 0;
+            // get the deep BoardStates for this move
+            Set<BoardState> deepestBoardStatesSet = deepestBoardStates.get(
+                    this.piece).get(m);
 
-			for (BoardState deepBS : deepestBoardStatesSet) {
-				avgConfidence += ((double) deepBS.getNumPieces(this.piece))
-						/ (deepBS.getNumPieces(this.piece) + deepBS
-								.getNumPieces(this.piece.getAlternate()));
-			}
-			avgConfidence /= deepestBoardStatesSet.size();
-			avgConfidence *= gameDuration;
+            double avgConfidence = 0;
 
-			moveConfidences.put(m, avgConfidence);
-		}
-		return moveConfidences;
-	}
+            if (deepestBoardStatesSet.size() != 0) {
+                for (BoardState deepBS : deepestBoardStatesSet) {
+                    avgConfidence += ((double) deepBS.getNumPieces(this.piece))
+                            / (deepBS.getNumPieces(this.piece) + deepBS
+                                    .getNumPieces(this.piece.getAlternate()));
+                }
+                avgConfidence /= deepestBoardStatesSet.size();
+                avgConfidence *= gameDuration;
+            }
+            else {
+                avgConfidence = 0;
+            }
+
+            moveConfidences.put(m, avgConfidence);
+        }
+        return moveConfidences;
+    }
 
 }
