@@ -15,7 +15,7 @@ public class AIBrain extends Player {
     private Map<Bot, Double> botList;
     private static final int maxDepth = 3;
 
-    private static final int maxElements = 2000;
+    private static final int maxElements = 1500;
 
     private boolean beQuiet;
 
@@ -24,20 +24,30 @@ public class AIBrain extends Player {
 
         BoardState currentBS = OthelloApplication.model.getCurrentBoardState();
         Piece currentPiece = OthelloApplication.model.getCurrentPiece();
+        
+        if (!beQuiet) {
+            System.out.println("Thinking...");
+        }
 
         Map<Piece, Map<Move, Set<BoardState>>> deepest = getDeepestBoardStates2(
                 maxElements, currentBS, currentPiece);
 
         if (!beQuiet) {
-            int numBoards = 0;
+            int numBlackBoards = 0;
+            int numWhiteBoards = 0;
 
             for (Move m : deepest.get(Piece.BLACK).keySet()) {
-                Set<BoardState> boards = deepest.get(Piece.BLACK).get(m);
-                numBoards += boards.size();
+                numBlackBoards += deepest.get(Piece.BLACK).get(m).size();
+            }
+            
+            for (Move m : deepest.get(Piece.WHITE).keySet()) {
+                numWhiteBoards += deepest.get(Piece.WHITE).get(m).size();
             }
 
-            System.out.println(String.format("Considering %d boards...",
-                    numBoards));
+            System.out.println(String.format("Considering %d black boards...",
+                    numBlackBoards));
+            System.out.println(String.format("Considering %d white boards...",
+                    numWhiteBoards));
         }
 
         // for each bot

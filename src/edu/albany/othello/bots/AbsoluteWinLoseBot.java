@@ -1,6 +1,7 @@
 package edu.albany.othello.bots;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -21,9 +22,17 @@ public class AbsoluteWinLoseBot extends Bot {
             Map<Piece, Map<Move, Set<BoardState>>> deepestBoardStates) {
         Map<Move, Double> moveConfidences = new HashMap<Move, Double>();
 
-        Map<Move, Set<BoardState>> allDeepestBoardStates = deepestBoardStates
-                .get(Piece.WHITE);
-        allDeepestBoardStates.putAll(deepestBoardStates.get(Piece.BLACK));
+        Map<Move, Set<BoardState>> allDeepestBoardStates = new HashMap<Move, Set<BoardState>>();
+
+        for (Move m : deepestBoardStates.get(Piece.WHITE).keySet()) {
+            allDeepestBoardStates.put(m, new HashSet<BoardState>(
+                    deepestBoardStates.get(Piece.WHITE).get(m)));
+        }
+
+        for (Move m : deepestBoardStates.get(Piece.BLACK).keySet()) {
+            allDeepestBoardStates.get(m).addAll(
+                    deepestBoardStates.get(Piece.BLACK).get(m));
+        }
 
         for (Move m : allDeepestBoardStates.keySet()) {
 
@@ -34,17 +43,24 @@ public class AbsoluteWinLoseBot extends Bot {
             boolean isWin = true;
             boolean isLose = true;
 
-            for (BoardState deepBS : deepestBoardStatesSet) {
-                isWin &= deepBS.getWinningPiece() == this.piece;
-                isLose &= deepBS.getWinningPiece() == this.piece.getAlternate();
+            if (deepestBoardStatesSet.size() != 0) {
+                for (BoardState deepBS : deepestBoardStatesSet) {
+                    isWin &= deepBS.getWinningPiece() == this.piece;
+                    isLose &= deepBS.getWinningPiece() == this.piece
+                            .getAlternate();
+                }
+
+                moveConfidences.put(m, (isWin ? 1.0 : 0.0)
+                        + (isLose ? -1.0 : 0.0));
+
+                if (isWin && !hasGloated) {
+                    System.out.println("**** You have no chance to survive "
+                            + "make your time. ****");
+                    hasGloated = true;
+                }
             }
-
-            moveConfidences.put(m, (isWin ? 1.0 : 0.0) + (isLose ? -1.0 : 0.0));
-
-            if (isWin && !hasGloated) {
-                System.err.println("You have no chance to survive "
-                        + "make your time.");
-                hasGloated = true;
+            else {
+                moveConfidences.put(m, 0.0);
             }
         }
         return moveConfidences;

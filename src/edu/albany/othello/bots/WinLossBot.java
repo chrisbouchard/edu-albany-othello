@@ -1,6 +1,7 @@
 package edu.albany.othello.bots;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -19,9 +20,17 @@ public class WinLossBot extends Bot {
 			Map<Piece, Map<Move, Set<BoardState>>> deepestBoardStates) {
 		Map<Move, Double> moveConfidences = new HashMap<Move, Double>();
 
-		Map<Move, Set<BoardState>> allDeepestBoardStates = deepestBoardStates
-				.get(Piece.WHITE);
-		allDeepestBoardStates.putAll(deepestBoardStates.get(Piece.BLACK));
+		Map<Move, Set<BoardState>> allDeepestBoardStates = new HashMap<Move, Set<BoardState>>();
+
+        for (Move m : deepestBoardStates.get(Piece.WHITE).keySet()) {
+            allDeepestBoardStates.put(m, new HashSet<BoardState>(
+                    deepestBoardStates.get(Piece.WHITE).get(m)));
+        }
+
+        for (Move m : deepestBoardStates.get(Piece.BLACK).keySet()) {
+            allDeepestBoardStates.get(m).addAll(
+                    deepestBoardStates.get(Piece.BLACK).get(m));
+        }
 
 		for (Move m : allDeepestBoardStates.keySet()) {
 
