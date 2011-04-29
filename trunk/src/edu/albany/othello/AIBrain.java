@@ -24,6 +24,11 @@ public class AIBrain extends Player {
             // all (move, confidence) pairs for b
             Map<Move, Double> moveConfidences = b.getMoveConfidences(
                     getBoardState(), getDeepestBoardStates());
+
+            // DEBUGGING OUTPUT
+            System.out.println(String.format("    %s: %s", b.getClass()
+                    .getSimpleName(), moveConfidences));
+
             // for each (move, confidence) pair for b
             for (Entry<Move, Double> value : moveConfidences.entrySet()) {
                 // compute the weighted conf
