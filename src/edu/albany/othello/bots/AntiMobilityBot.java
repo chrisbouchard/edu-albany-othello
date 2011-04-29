@@ -27,9 +27,14 @@ public class AntiMobilityBot extends Bot {
 			double avgConfidence = 0;
 
 			for (BoardState deepBS : deepestBoardStatesSet) {
-				avgConfidence += ((double) deepBS.getValidMoves(
+				if (deepBS.getNumPieces(null)!=0){
+					avgConfidence += ((double) deepBS.getValidMoves(
+				
 						this.piece.getAlternate()).size())
 						/ deepBS.getNumPieces(null);
+				} else {
+					avgConfidence = 0;
+				}
 			}
 			avgConfidence /= deepestBoardStatesSet.size();
 
