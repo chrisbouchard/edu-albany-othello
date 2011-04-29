@@ -54,8 +54,8 @@ public class AbsoluteWinLoseBot extends Bot {
                         + (isLose ? -1.0 : 0.0));
 
                 if (isWin && !hasGloated) {
-                    System.out.println("**** You have no chance to survive "
-                            + "make your time. ****");
+                    System.out.println("**** YOU HAVE NO CHANCE TO SURVIVE "
+                            + "MAKE YOUR TIME. ****");
                     hasGloated = true;
                 }
             }
