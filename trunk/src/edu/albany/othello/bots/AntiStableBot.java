@@ -32,19 +32,24 @@ public class AntiStableBot extends Bot {
 					this.piece.getAlternate()).get(m);
 			double avgConfidence = 0;
 			double avgStablePieces = 0;
-			// for each deep BoardState
-			for (BoardState deepBS : deepestBoardStatesSet) {
-				// find the number of stable pieces
-				Set<Move> stablePieces = getStablePieces(deepBS,
-						new HashSet<Move>());
-				int numStablePieces = stablePieces.size();
 
-				avgStablePieces += numStablePieces;
+			if (deepestBoardStatesSet.size() != 0) {
+
+				// for each deep BoardState
+				for (BoardState deepBS : deepestBoardStatesSet) {
+					// find the number of stable pieces
+					Set<Move> stablePieces = getStablePieces(deepBS,
+							new HashSet<Move>());
+					int numStablePieces = stablePieces.size();
+
+					avgStablePieces += numStablePieces;
+				}
+				avgStablePieces /= deepestBoardStatesSet.size();
+				Set<Move> stablePiecesBS = getStablePieces(bs, stablePieceSet);
+				avgConfidence = (avgStablePieces - stablePiecesBS.size()) / 64;
+			} else {
+				avgConfidence = 0;
 			}
-			avgStablePieces /= deepestBoardStatesSet.size();
-			Set<Move> stablePiecesBS = getStablePieces(bs, stablePieceSet);
-			avgConfidence = (avgStablePieces - stablePiecesBS.size()) / 64;
-
 			moveConfidences.put(m, -avgConfidence);
 		}
 
@@ -135,26 +140,26 @@ public class AntiStableBot extends Bot {
 		boolean leftRight = m.getC() == 1 || m.getC() == 7;
 		boolean adj1 = topBottom
 				|| leftRight
-				|| stablePieceSet.contains(new Move(piece.getAlternate(), m.getR() - 1, m
-						.getC() - 1))
-				|| stablePieceSet.contains(new Move(piece.getAlternate(), m.getR() + 1, m
-						.getC() + 1));
+				|| stablePieceSet.contains(new Move(piece.getAlternate(), m
+						.getR() - 1, m.getC() - 1))
+				|| stablePieceSet.contains(new Move(piece.getAlternate(), m
+						.getR() + 1, m.getC() + 1));
 		boolean adj2 = topBottom
-				|| stablePieceSet.contains(new Move(piece.getAlternate(), m.getR() - 1, m
-						.getC()))
-				|| stablePieceSet.contains(new Move(piece.getAlternate(), m.getR() + 1, m
-						.getC()));
+				|| stablePieceSet.contains(new Move(piece.getAlternate(), m
+						.getR() - 1, m.getC()))
+				|| stablePieceSet.contains(new Move(piece.getAlternate(), m
+						.getR() + 1, m.getC()));
 		boolean adj3 = topBottom
 				|| leftRight
-				|| stablePieceSet.contains(new Move(piece.getAlternate(), m.getR() - 1, m
-						.getC() + 1))
-				|| stablePieceSet.contains(new Move(piece.getAlternate(), m.getR() + 1, m
-						.getC() - 1));
+				|| stablePieceSet.contains(new Move(piece.getAlternate(), m
+						.getR() - 1, m.getC() + 1))
+				|| stablePieceSet.contains(new Move(piece.getAlternate(), m
+						.getR() + 1, m.getC() - 1));
 		boolean adj4 = leftRight
-				|| stablePieceSet.contains(new Move(piece.getAlternate(), m.getR(),
-						m.getC() - 1))
-				|| stablePieceSet.contains(new Move(piece.getAlternate(), m.getR(),
-						m.getC() + 1));
+				|| stablePieceSet.contains(new Move(piece.getAlternate(), m
+						.getR(), m.getC() - 1))
+				|| stablePieceSet.contains(new Move(piece.getAlternate(), m
+						.getR(), m.getC() + 1));
 
 		return adj1 && adj2 && adj3 && adj4;
 	}
