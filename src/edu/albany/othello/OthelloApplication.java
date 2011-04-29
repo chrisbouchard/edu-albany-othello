@@ -23,8 +23,7 @@ public class OthelloApplication {
             view = new OthelloSwingView();
             controller = new OthelloController(players);
 
-            Piece winningPiece = controller.playGame();
-            
+            controller.playGame();
             System.out.println(model.getMoveList());
         }
         else {
