@@ -18,9 +18,7 @@ public class BoardState {
                 .getValidMoves(Piece.WHITE));
         System.out.println(bs.getBoardFromMove(new Move(Piece.BLACK, 2, 3))
                 .getBoardFromMove(new Move(Piece.WHITE, 4, 2)));
-        System.out.println(1.0 * Double.MAX_VALUE);
-        System.out.println(1.0 * Double.MAX_VALUE + 400);
-        System.out.println(0.0 * Double.MAX_VALUE);
+        System.out.println(1.0 / 0.0);
     }
 
     // Convenience method to check if a square is on the board
