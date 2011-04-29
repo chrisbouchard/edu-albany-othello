@@ -98,11 +98,12 @@ public class AIBrain extends Player {
         super(p);
         this.beQuiet = beQuiet;
         botList = new HashMap<Bot, Double>();
-        botList.put(new RandomBot(p), 0.0);
-        botList.put(new MobilityBot(p), 3.0);
+        botList.put(new RandomBot(p), 1.0);
+        botList.put(new MobilityBot(p), 4.0);
         botList.put(new AntiMobilityBot(p), 6.0);
         botList.put(new MaxPieceBot(p), 6.0);
         botList.put(new ParityBot(p), 9.0);
+        botList.put(new WinLossBot(p),10.0);
         botList.put(new AbsoluteWinLoseBot(p), Double.MAX_VALUE);
     }
 
