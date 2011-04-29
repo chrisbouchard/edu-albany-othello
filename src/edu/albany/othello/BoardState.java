@@ -28,7 +28,7 @@ public class BoardState {
 
     private Piece[][] board;
     private Map<Piece, Set<Move>> validMoves;
-    private Map<Move, BoardState> childBoards;
+    //private Map<Move, BoardState> childBoards;
 
     // Create a default board state
     public BoardState() {
@@ -267,6 +267,6 @@ public class BoardState {
     private void init() {
         board = new Piece[ROWS][COLS];
         validMoves = new HashMap<Piece, Set<Move>>();
-        childBoards = new HashMap<Move, BoardState>();
+        //childBoards = new HashMap<Move, BoardState>();
     }
 }
