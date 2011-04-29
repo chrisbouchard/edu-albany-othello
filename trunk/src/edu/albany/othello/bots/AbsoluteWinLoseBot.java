@@ -10,7 +10,7 @@ import edu.albany.othello.Piece;
 
 public class AbsoluteWinLoseBot extends Bot {
     private boolean hasGloated;
-    
+
     public AbsoluteWinLoseBot(Piece p) {
         super(p);
         hasGloated = false;
