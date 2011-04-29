@@ -26,8 +26,10 @@ public class AIBrain extends Player {
                     getBoardState(), getDeepestBoardStates());
 
             // DEBUGGING OUTPUT
-            System.out.println(String.format("    %s: %s", b.getClass()
-                    .getSimpleName(), moveConfidences));
+            if (!beQuiet) {
+                System.out.println(String.format("    %s: %s", b.getClass()
+                        .getSimpleName(), moveConfidences));
+            }
 
             // for each (move, confidence) pair for b
             for (Entry<Move, Double> value : moveConfidences.entrySet()) {
