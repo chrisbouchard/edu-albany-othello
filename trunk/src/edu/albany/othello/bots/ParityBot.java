@@ -34,7 +34,7 @@ public class ParityBot extends Bot {
 
 			// number of empty pieces
 			Set<Move> region = numPiecesInRegion(bs, m, new HashSet<Move>());
-			int numEmptyPieces = region.size();
+			int numEmptyPieces = region.size() + 1;
 
 			// favor is -1 if even, 1 if odd
 			int favor = (numEmptyPieces % 2 == 0) ? -1 : 1;
@@ -61,14 +61,13 @@ public class ParityBot extends Bot {
 
 		// for each surrounding position
 		for (Move m : surroundingPositions) {
-			// if it is a valid position
-			if (BoardState.isInBounds(m.getR(), m.getC()))
-				// if there is no piece in this position
-				if (bs.getPieceAt(m.getR(), m.getC()) == null)
-					// if the piece has not been added to the set yet
-					if (region.add(m))
-						// recursively find all positions from this position
-						region.addAll(numPiecesInRegion(bs, m, region));
+			// if it is a valid position && there is no piece in this position
+			// && the piece has not been added to the set yet
+			if (BoardState.isInBounds(m.getR(), m.getC())
+					&& bs.getPieceAt(m.getR(), m.getC()) == null
+					&& region.add(m))
+				// recursively find all positions from this position
+				region.addAll(numPiecesInRegion(bs, m, region));
 		}
 
 		return region;
