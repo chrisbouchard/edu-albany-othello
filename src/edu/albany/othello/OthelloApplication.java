@@ -23,6 +23,8 @@ public class OthelloApplication {
             controller = new OthelloController(players);
 
             Piece winningPiece = controller.playGame();
+            
+            System.out.println(model.getMoveList());
         }
         else {
             Map<Bot, Double> randomBot = new HashMap<Bot, Double>();
