@@ -25,6 +25,8 @@ public class AbsoluteWinLoseBot extends Bot {
                 .get(Piece.WHITE);
         allDeepestBoardStates.putAll(deepestBoardStates.get(Piece.BLACK));
 
+        boolean allWin = true;
+
         for (Move m : allDeepestBoardStates.keySet()) {
 
             // get the deep BoardStates for this move
@@ -39,14 +41,16 @@ public class AbsoluteWinLoseBot extends Bot {
                 isLose &= deepBS.getWinningPiece() == this.piece.getAlternate();
             }
 
+            allWin &= isWin;
             moveConfidences.put(m, (isWin ? 1.0 : 0.0) + (isLose ? -1.0 : 0.0));
-
-            if (isWin && !hasGloated) {
-                System.err.println("You have no chance to survive "
-                        + "make your time.");
-                hasGloated = true;
-            }
         }
+
+        if (allWin && !hasGloated) {
+            System.err.println("You have no chance to survive "
+                    + "make your time.");
+            hasGloated = true;
+        }
+
         return moveConfidences;
     }
 }
