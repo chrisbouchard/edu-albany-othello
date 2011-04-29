@@ -32,19 +32,24 @@ public class StableBot extends Bot {
 					this.piece).get(m);
 			double avgConfidence = 0;
 			double avgStablePieces = 0;
-			// for each deep BoardState
-			for (BoardState deepBS : deepestBoardStatesSet) {
-				// find the number of stable pieces
-				Set<Move> stablePieces = getStablePieces(deepBS,
-						new HashSet<Move>());
-				int numStablePieces = stablePieces.size();
 
-				avgStablePieces += numStablePieces;
+			if (deepestBoardStatesSet.size() != 0) {
+
+				// for each deep BoardState
+				for (BoardState deepBS : deepestBoardStatesSet) {
+					// find the number of stable pieces
+					Set<Move> stablePieces = getStablePieces(deepBS,
+							new HashSet<Move>());
+					int numStablePieces = stablePieces.size();
+
+					avgStablePieces += numStablePieces;
+				}
+				avgStablePieces /= deepestBoardStatesSet.size();
+				Set<Move> stablePiecesBS = getStablePieces(bs, stablePieceSet);
+				avgConfidence = (avgStablePieces - stablePiecesBS.size()) / 64;
+			} else {
+				avgConfidence = 0;
 			}
-			avgStablePieces /= deepestBoardStatesSet.size();
-			Set<Move> stablePiecesBS = getStablePieces(bs, stablePieceSet);
-			avgConfidence = (avgStablePieces - stablePiecesBS.size()) / 64;
-
 			moveConfidences.put(m, avgConfidence);
 		}
 
