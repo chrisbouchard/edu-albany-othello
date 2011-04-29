@@ -12,11 +12,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-/*
- * TODO: We need to add a method to prompt for a move.
- * We may wind up tightly coupling the view to the controller for simplicity.
- */
-
 public class OthelloSwingView implements OthelloView {
     private class ButtonActionListener implements ActionListener {
         private int r;
