@@ -13,7 +13,6 @@ public class StableBot extends Bot {
 
 	public StableBot(Piece p) {
 		super(p);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -31,29 +30,19 @@ public class StableBot extends Bot {
 			// get the deep BoardStates for this move
 			Set<BoardState> deepestBoardStatesSet = deepestBoardStates.get(
 					this.piece).get(m);
-			System.out.println("For move: " + m + "There are "
-					+ deepestBoardStatesSet.size() + " BoardStates.");
 			double avgConfidence = 0;
 			double avgStablePieces = 0;
 			// for each deep BoardState
 			for (BoardState deepBS : deepestBoardStatesSet) {
 				// find the number of stable pieces
-				Set<Move> stablePieces = getStablePieces(deepBS, new HashSet<Move>());
+				Set<Move> stablePieces = getStablePieces(deepBS,
+						new HashSet<Move>());
 				int numStablePieces = stablePieces.size();
-				if (stablePieces.size() != 0)
-					System.out
-							.println("The future BoardState has these stable pieces for the AI: "
-									+ stablePieces);
 
 				avgStablePieces += numStablePieces;
-				System.out.println(avgStablePieces);
 			}
 			avgStablePieces /= deepestBoardStatesSet.size();
-			System.out.println(avgStablePieces);
 			Set<Move> stablePiecesBS = getStablePieces(bs, stablePieceSet);
-			System.out
-					.println("The current BoardState has these stable pieces for the AI: "
-							+ stablePiecesBS);
 			avgConfidence = (avgStablePieces - stablePiecesBS.size()) / 64;
 
 			moveConfidences.put(m, avgConfidence);
@@ -106,31 +95,23 @@ public class StableBot extends Bot {
 		if (bs.getPieceAt(7, 7) == this.piece)
 			stablePieceSet.add(new Move(this.piece, 7, 7));
 
-		
-
 		// for each stable piece
 		for (Move m : stablePieceSet) {
 			// get the valid adjacent pieces
 			Set<Move> validAdjacentPieces = getValidAdjacentPieces(bs, m,
 					this.piece);
-			System.out.println("the boardstate here is:\n" + bs);
-			System.out.println("valid adj pieces: " + validAdjacentPieces);
 			candidateSet.addAll(validAdjacentPieces);
 		}
-		System.out.println("here1");
 		// for each candidate, find the new candidates and add them to the
 		// candidate list
 		Set<Move> newCandidateSet = candidateSet;
 		Set<Move> oldCandidateSet = null;
 		do {
-			System.out.println("here2");
 			oldCandidateSet = newCandidateSet;
 			newCandidateSet = new HashSet<Move>();
 			for (Move m : oldCandidateSet) {
-				System.out.println("here3");
 				// if the piece is stable and it has not been added already
 				if (isStable(m, stablePieceSet) && stablePieceSet.add(m)) {
-					System.out.println("here4");
 					newCandidateSet.addAll(getValidAdjacentPieces(bs, m,
 							this.piece));
 				}
