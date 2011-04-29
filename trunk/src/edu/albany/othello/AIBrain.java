@@ -141,7 +141,7 @@ public class AIBrain extends Player {
         botList.put(new ParityBot(p), 9.0);
         botList.put(new WinLossBot(p), 10.0);
         botList.put(new AbsoluteWinLoseBot(p), Double.MAX_VALUE);
-        botList.put(new StableBot(p), 1000.0);
+        botList.put(new StableBot(p), 100.0);
     }
 
     // Creates an AIBrain that uses the given bots with their given weights
