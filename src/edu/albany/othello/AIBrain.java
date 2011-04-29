@@ -15,15 +15,41 @@ public class AIBrain extends Player {
     private Map<Bot, Double> botList;
     private static final int maxDepth = 3;
 
+    private static final int maxElements = 2000;
+
     private boolean beQuiet;
 
     public Move getBestMove() {
         Set<Map<Move, Double>> moveConfidenceSet = new HashSet<Map<Move, Double>>();
+
+        BoardState currentBS = OthelloApplication.model.getCurrentBoardState();
+        Piece currentPiece = OthelloApplication.model.getCurrentPiece();
+
+        Map<Piece, Map<Move, Set<BoardState>>> deepest = getDeepestBoardStates2(
+                maxElements, currentBS, currentPiece);
+
+        if (!beQuiet) {
+            int numBoards = 0;
+
+            for (Move m : deepest.get(Piece.BLACK).keySet()) {
+                Set<BoardState> boards = deepest.get(Piece.BLACK).get(m);
+                numBoards += boards.size();
+            }
+
+            System.out.println(String.format("Considering %d boards...",
+                    numBoards));
+        }
+
         // for each bot
         for (Bot b : botList.keySet()) {
             // all (move, confidence) pairs for b
+            /*
+             * Map<Move, Double> moveConfidences = b.getMoveConfidences(
+             * getBoardState(), getDeepestBoardStates());
+             */
+
             Map<Move, Double> moveConfidences = b.getMoveConfidences(
-                    getBoardState(), getDeepestBoardStates());
+                    getBoardState(), deepest);
 
             // DEBUGGING OUTPUT
             if (!beQuiet) {
@@ -242,26 +268,23 @@ public class AIBrain extends Player {
 
                 return hash;
             }
-
-            public String toString() {
-                return String.format("[%s %d]", p, bs.hashCode());
-            }
         }
 
         // Method logic starts here
 
         Map<Piece, Map<Move, Set<BoardState>>> ans = new HashMap<Piece, Map<Move, Set<BoardState>>>();
 
-        // BoardState currentBS =
-        // OthelloApplication.model.getCurrentBoardState();
-        // Piece currentPiece = OthelloApplication.model.getCurrentPiece();
-
         for (Piece p : Piece.values()) {
             Map<Move, Set<BoardState>> pieceAns = new HashMap<Move, Set<BoardState>>();
             Set<Element> currentLevel = new HashSet<Element>();
             Set<Element> newElements = new HashSet<Element>();
 
-            Element rootElt = new Element(currentBS, currentPiece, null, null);
+            // Add the root to the current level
+            // Root has no parent, and no move was made to get it
+            // Assume the current board is the previous color just to get things
+            // started
+            Element rootElt = new Element(currentBS,
+                    currentPiece.getAlternate(), null, null);
             currentLevel.add(rootElt);
             newElements.add(rootElt);
 
@@ -289,44 +312,40 @@ public class AIBrain extends Player {
                             Element newE = new Element(
                                     newElt.bs.getBoardFromMove(vm), nextP,
                                     newElt, rootMove);
-                            currentLevel.add(newE);
-                            newElements.add(newE);
-                            --availableElements;
+                            
+                            // Try to add the element
+                            if (currentLevel.add(newE)) {
+                                // Ok, it must be new
+                                newElements.add(newE);
+                                --availableElements;
 
-                            // Create a set for this move
-                            if (newElt.rootMove == null) {
-                                pieceAns.put(vm, new HashSet<BoardState>());
-                            }
+                                // Create a set for this move
+                                if (newElt.rootMove == null) {
+                                    pieceAns.put(vm, new HashSet<BoardState>());
+                                }
 
-                            // If this is the color we're looking for, remove
-                            // its ancestors
-                            if (newE.p == p) {
-                                while (newE.parent != null) {
-                                    Element parent = newE.parent;
-                                    newE.parent = newE.parent.parent;
-                                    currentLevel.remove(parent);
-                                    ++availableElements;
+                                // If this is the color we're looking for,
+                                // remove
+                                // its ancestors
+                                if (newE.p == p) {
+                                    while (newE.parent != null
+                                            && currentLevel
+                                                    .contains(newE.parent)) {
+                                        Element parent = newE.parent;
+                                        newE.parent = newE.parent.parent;
+                                        currentLevel.remove(parent);
+                                        ++availableElements;
+                                    }
                                 }
                             }
-                            // Otherwise remove all but its most remote
-                            // ancestor
-                            else {
-                                while (newE.parent != null
-                                        && newE.parent.parent != null) {
-                                    Element parent = newE.parent;
-                                    newE.parent = newE.parent.parent;
-                                    currentLevel.remove(parent);
-                                    ++availableElements;
-                                }
-                            }
+                        }
 
-                            // Find elements whose parent was removed and set
-                            // their parent to null
-                            for (Element elt : currentLevel) {
-                                if (elt.parent != null
-                                        && !currentLevel.contains(elt.parent)) {
-                                    elt.parent = null;
-                                }
+                        // Find elements whose parent was removed and set
+                        // their parent to null
+                        for (Element elt : currentLevel) {
+                            if (elt.parent != null
+                                    && !currentLevel.contains(elt.parent)) {
+                                elt.parent = null;
                             }
                         }
                     }
@@ -358,7 +377,7 @@ public class AIBrain extends Player {
     public static void main(String... args) {
         BoardState bs = new BoardState();
         AIBrain aib = new AIBrain(Piece.BLACK, true);
-        System.out.println(aib.getDeepestBoardStates2(10, bs, Piece.WHITE));
+        System.out.println(aib.getDeepestBoardStates2(10, bs, Piece.BLACK));
     }
 
 }
