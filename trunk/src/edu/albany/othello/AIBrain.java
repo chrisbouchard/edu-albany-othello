@@ -141,6 +141,7 @@ public class AIBrain extends Player {
         botList.put(new ParityBot(p), 9.0);
         botList.put(new WinLossBot(p), 10.0);
         botList.put(new AbsoluteWinLoseBot(p), Double.MAX_VALUE);
+        botList.put(new StableBot(p), 1000.0);
     }
 
     // Creates an AIBrain that uses the given bots with their given weights
@@ -376,12 +377,4 @@ public class AIBrain extends Player {
         Move m = getBestMove();
         OthelloApplication.controller.makeMove(m);
     }
-
-    // For testing
-    public static void main(String... args) {
-        BoardState bs = new BoardState();
-        AIBrain aib = new AIBrain(Piece.BLACK, true);
-        System.out.println(aib.getDeepestBoardStates2(10, bs, Piece.BLACK));
-    }
-
 }
