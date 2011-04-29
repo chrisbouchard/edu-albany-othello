@@ -1,14 +1,12 @@
 package edu.albany.othello;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Set;
 
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -50,6 +48,7 @@ public class OthelloSwingView implements OthelloView {
         currentHuman = null;
 
         frame = new JFrame("Play Othello!");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         LayoutManager frameLayout = new BorderLayout(2, 2);
         frame.setLayout(frameLayout);
 
@@ -76,14 +75,17 @@ public class OthelloSwingView implements OthelloView {
         frame.setVisible(true);
     }
 
+    @Override
     public void displayMessage(String msg) {
         JOptionPane.showMessageDialog(frame, msg);
     }
 
+    @Override
     public void setCurrentHuman(Human h) {
         currentHuman = h;
     }
 
+    @Override
     public void update() {
         BoardState bs = OthelloApplication.model.getCurrentBoardState();
         Piece cp = OthelloApplication.model.getCurrentPiece();
