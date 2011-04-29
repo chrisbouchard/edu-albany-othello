@@ -15,8 +15,7 @@ public class AIBrain extends Player {
     private Map<Bot, Double> botList;
     private static final int maxDepth = 3;
 
-    private static final int maxElements = 1500;
-
+    private int maxElements = 1500;
     private boolean beQuiet;
 
     public Move getBestMove() {
@@ -128,10 +127,11 @@ public class AIBrain extends Player {
     }
 
     // Creates an AIBrain that uses all bots at predetermined weights
-    public AIBrain(Piece p, boolean beQuiet) {
+    public AIBrain(Piece p, int maxElements, boolean beQuiet) {
         // TODO Auto-generated constructor stub
         // TODO fill in botList
         super(p);
+        this.maxElements = maxElements;
         this.beQuiet = beQuiet;
         botList = new HashMap<Bot, Double>();
         botList.put(new RandomBot(p), 1.0);
@@ -145,8 +145,9 @@ public class AIBrain extends Player {
     }
 
     // Creates an AIBrain that uses the given bots with their given weights
-    public AIBrain(Piece p, boolean beQuiet, Map<Bot, Double> botWeight) {
+    public AIBrain(Piece p, int maxElements, boolean beQuiet, Map<Bot, Double> botWeight) {
         super(p);
+        this.maxElements = maxElements;
         this.beQuiet = beQuiet;
         botList = new HashMap<Bot, Double>(botWeight);
     }
