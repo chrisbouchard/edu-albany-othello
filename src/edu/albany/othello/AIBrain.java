@@ -239,6 +239,7 @@ public class AIBrain extends Player {
 
             int availableElements = maxElements - currentLevel.size();
 
+            // If we added new elements last time, process them
             while (!newElements.isEmpty()) {
                 Set<Element> prevNewElements = newElements;
                 newElements = new HashSet<Element>();
