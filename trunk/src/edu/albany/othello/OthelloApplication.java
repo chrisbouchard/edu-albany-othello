@@ -16,7 +16,7 @@ public class OthelloApplication {
 
         if (args.length > 0 && args[0].equals("demo")) {
             players.put(Piece.BLACK, new Human(Piece.BLACK));
-            //players.put(Piece.BLACK, new AIBrain(Piece.BLACK, false));
+            //players.put(Piece.BLACK, new AIBrain(Piece.BLACK, 1500, false));
             players.put(Piece.WHITE, new AIBrain(Piece.WHITE, 1500, false));
 
             model = new OthelloModel();
